@@ -1,18 +1,62 @@
 "use client"
 
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 
 const steps = [
-  "Intake captured",
-  "Processed and routed",
-  "Outcome delivered",
+  {
+    title: "Intake captured",
+    description:
+      "Incoming requests are collected instantly with no manual handling.",
+  },
+  {
+    title: "Processed and routed",
+    description:
+      "Data is validated and sent to the right place automatically.",
+  },
+  {
+    title: "Outcome delivered",
+    description: "The result is logged, notified, and ready to use.",
+  },
 ];
+
+const timing = {
+  intervalMs: 1800,
+  transitionSeconds: 0.35,
+  ease: "easeInOut" as const,
+};
+
+const stepVariants = {
+  inactive: {
+    opacity: 0.45,
+    scale: 1,
+    boxShadow: "0 0 0 rgba(0,0,0,0)",
+    borderColor: "rgba(229, 231, 235, 1)",
+  },
+  active: {
+    opacity: 1,
+    scale: 1.02,
+    boxShadow:
+      "0 12px 24px rgba(17, 24, 39, 0.08), 0 0 0 1px rgba(37, 99, 235, 0.2), 0 0 24px rgba(37, 99, 235, 0.12)",
+    borderColor: "rgba(37, 99, 235, 0.25)",
+  },
+};
 
 type AutomationFlowSectionProps = {
   className?: string;
 };
 
 export function AutomationFlowSection({ className }: AutomationFlowSectionProps) {
+  const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveStep((current) => (current + 1) % steps.length);
+    }, timing.intervalMs);
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <motion.div
       className={className}
@@ -33,25 +77,46 @@ export function AutomationFlowSection({ className }: AutomationFlowSectionProps)
         </div>
 
         <div className="mt-8 grid gap-3">
-          {steps.map((step, index) => (
+          {steps.map((step, index) => {
+            const isActive = activeStep === index;
+
+            return (
             <motion.div
-              key={step}
-              className="flex items-center gap-3 rounded-2xl border border-border bg-background px-5 py-4"
-              animate={{ opacity: [0.35, 1, 1, 0.35], y: [6, 0, 0, 6] }}
+              key={step.title}
+              className="rounded-2xl border bg-background px-3 py-4"
+              animate={isActive ? "active" : "inactive"}
+              variants={stepVariants}
               transition={{
-                duration: 2.4,
-                repeat: Infinity,
-                repeatDelay: 0.4,
-                delay: index * 0.4,
-                ease: "easeInOut",
+                duration: timing.transitionSeconds,
+                ease: timing.ease,
               }}
             >
-              <span className="h-2 w-2 rounded-full bg-primary" />
-              <span className="text-sm font-semibold text-foreground">
-                {step}
-              </span>
+              <div className="grid gap-1">
+                <p className="text-sm font-semibold leading-5 text-foreground">
+                  {step.title}
+                </p>
+                {isActive ? (
+                  <motion.p
+                    key={`desc-${index}-${activeStep}`}
+                    className="text-sm leading-6 text-muted-foreground"
+                    initial={{ clipPath: "inset(0 100% 0 0)" }}
+                    animate={{ clipPath: "inset(0 0 0 0)" }}
+                    transition={{
+                      duration: 2,
+                      ease: timing.ease,
+                    }}
+                  >
+                    {step.description}
+                  </motion.p>
+                ) : (
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    {step.description}
+                  </p>
+                )}
+              </div>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </motion.div>

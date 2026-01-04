@@ -14,7 +14,7 @@ const displayFont = Manrope({
 
 export function HeroSection() {
   return (
-    <Section className="min-h-screen py-24 sm:py-28">
+    <Section className="min-h-screen py-12 sm:py-16">
       <Container>
         <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
           <span className="rounded-full border border-border bg-card px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
@@ -28,7 +28,7 @@ export function HeroSection() {
           >
             One manual process at a time. Eliminated.
           </h1>
-          <p className="mt-6 max-w-2xl text-lg">
+          <p className="mt-7 max-w-2xl text-xl font-normal text-muted-foreground">
             I design and build simple automation systems that remove repetitive
             admin without adding staff.
           </p>
@@ -43,7 +43,7 @@ export function HeroSection() {
               See the QuickStart
             </Link>
           </div>
-          <AutomationFlowSection className="mt-10 w-full max-w-2xl lg:w-[50vw] lg:max-w-none" />
+          <AutomationFlowSection className="mt-8 w-full max-w-2xl lg:w-[50vw] lg:max-w-none" />
         </div>
       </Container>
     </Section>

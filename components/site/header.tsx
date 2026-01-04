@@ -11,7 +11,7 @@ type HeaderProps = {
 };
 
 export function Header({
-  brand = "Automation Sales Hub",
+  brand = "Freeman Madudili",
   ctaLabel = "Free Workflow Audit",
   ctaHref = "/audit",
 }: HeaderProps) {

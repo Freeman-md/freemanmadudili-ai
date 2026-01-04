@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
 
-import { Container } from "@/components/layout/container";
-import { Section } from "@/components/layout/section";
-import { FaqsSection } from "@/components/sections/faqs-section";
+import { AutomationFlowSection } from "@/components/sections/automation-flow-section";
 import { HeroSection } from "@/components/sections/hero-section";
-import { HowItWorksSection } from "@/components/sections/how-it-works-section";
-import { ProofSection } from "@/components/sections/proof-section";
-import { ServicesSection } from "@/components/sections/services-section";
-import { WhoSection } from "@/components/sections/who-section";
 import { Footer } from "@/components/site/footer";
 import { Header } from "@/components/site/header";
 
@@ -24,17 +18,6 @@ export default function Home() {
 
       <main>
         <HeroSection />
-        <WhoSection />
-        <ServicesSection />
-        <ProofSection />
-        <HowItWorksSection />
-        <FaqsSection />
-
-        <Section className="pt-0">
-          <Container>
-            <div className="border-t border-border" />
-          </Container>
-        </Section>
       </main>
 
       <Footer />

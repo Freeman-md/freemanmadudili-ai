@@ -9,16 +9,16 @@ export function Footer() {
         <span>2024 Automation Sales Hub</span>
         <nav className="flex flex-wrap gap-4">
           <Link className="hover:text-foreground" href="/audit">
-            Audit
+            Free Workflow Audit
           </Link>
           <Link className="hover:text-foreground" href="/quickstart">
-            QuickStart
+            Automation QuickStart
           </Link>
           <Link className="hover:text-foreground" href="/proof">
             Proof
           </Link>
           <Link className="hover:text-foreground" href="/recruiters">
-            Recruiters
+            For Recruiters
           </Link>
         </nav>
       </Container>

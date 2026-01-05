@@ -1,38 +1,37 @@
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 
-const bullets = [
-  "Teams replying to the same messages every day",
-  "Businesses losing leads due to slow or inconsistent follow-ups",
-  "Founders copying data between tools manually",
-  "Operations held together by spreadsheets and human effort",
+const signals = [
+  "Same messages answered every day",
+  "Leads slipping through slow follow-ups",
+  "Copying data between tools by hand",
+  "Operations held together by spreadsheets",
 ];
 
 export function WhoSection() {
   return (
-    <Section className="bg-card">
+    <Section className="py-24">
       <Container>
-        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-          <div>
-            <h2>Who this is for</h2>
-            <p className="mt-3 max-w-lg">
-              This is for growing businesses that are tired of manual work
-              slowing them down.
-            </p>
-            <p className="mt-6 max-w-lg text-sm font-semibold text-foreground">
-              If one clear manual process is causing friction, this is for you.
-            </p>
-          </div>
-          <div className="grid gap-4">
-            {bullets.map((item) => (
-              <div
-                key={item}
-                className="rounded-2xl border border-border bg-background p-5"
-              >
-                <p className="text-sm font-semibold text-foreground">{item}</p>
-              </div>
-            ))}
-          </div>
+        <div className="mx-auto max-w-3xl text-center">
+          <h2>This is for you if...</h2>
+          <p className="mt-3 text-base text-muted-foreground">
+            Manual steps keep interrupting work that should flow.
+          </p>
+          <p className="mt-4 text-sm text-muted-foreground">
+            If one clear manual process is causing friction, this is a good
+            place to start.
+          </p>
+        </div>
+        <div className="mx-auto mt-6 grid max-w-3xl gap-3 sm:grid-cols-2">
+          {signals.map((item) => (
+            <div
+              key={item}
+              className="flex items-center gap-4 rounded-xl bg-card px-6 py-3 text-left"
+            >
+              <span className="h-5 w-0.5 rounded-full bg-primary/25" />
+              <p className="text-sm font-semibold text-foreground">{item}</p>
+            </div>
+          ))}
         </div>
       </Container>
     </Section>

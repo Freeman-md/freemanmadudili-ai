@@ -1,20 +1,19 @@
 import Link from "next/link";
-import { Manrope } from "next/font/google";
+import { Ubuntu } from "next/font/google";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { AutomationFlowSection } from "@/components/sections/automation-flow-section";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const displayFont = Manrope({
+const displayFont = Ubuntu({
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
+  weight: ["300", "400", "500"],
 });
 
 export function HeroSection() {
   return (
-    <Section className="min-h-screen py-12 sm:py-16">
+    <Section className="py-24">
       <Container>
         <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
           <span className="rounded-full border border-border bg-card px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
@@ -23,14 +22,15 @@ export function HeroSection() {
           <h1
             className={cn(
               displayFont.className,
-              "mt-6 text-5xl font-extrabold leading-[1.05] sm:text-6xl lg:text-7xl"
+              "mt-6 text-5xl font-extrabold leading-[1.05] text-muted-foreground sm:text-6xl lg:text-7xl"
             )}
           >
-            One manual process at a time. Eliminated.
+            One <span className="text-foreground">manual</span> process at a time.{" "}
+            <span className="text-foreground">Eliminated.</span>
           </h1>
+
           <p className="mt-7 max-w-2xl text-xl font-normal text-muted-foreground">
-            I design and build simple automation systems that remove repetitive
-            admin without adding staff.
+            I remove the repetitive admin slowing your business down, without hiring more staff.
           </p>
           <div className="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:flex-row">
             <Link className={cn(buttonVariants({ size: "lg" }))} href="/audit">
@@ -43,7 +43,6 @@ export function HeroSection() {
               See the QuickStart
             </Link>
           </div>
-          <AutomationFlowSection className="mt-8 w-full max-w-2xl lg:w-[50vw] lg:max-w-none" />
         </div>
       </Container>
     </Section>

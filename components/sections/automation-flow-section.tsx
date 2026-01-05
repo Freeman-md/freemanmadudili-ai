@@ -1,22 +1,32 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { motion } from "motion/react";
+
+import { Container } from "@/components/layout/container";
+import { Section } from "@/components/layout/section";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const steps = [
   {
-    title: "Intake captured",
+    title: "Intake",
     description:
-      "Incoming requests are collected instantly with no manual handling.",
+      "Capture requests and requirements with no manual back-and-forth.",
   },
   {
-    title: "Processed and routed",
+    title: "Build",
     description:
-      "Data is validated and sent to the right place automatically.",
+      "Design and implement the automation based on the agreed workflow.",
   },
   {
-    title: "Outcome delivered",
-    description: "The result is logged, notified, and ready to use.",
+    title: "Test",
+    description: "Validate the system end-to-end to ensure reliability.",
+  },
+  {
+    title: "Handover",
+    description: "Deliver documentation and walk-through for confident usage.",
   },
 ];
 
@@ -28,16 +38,15 @@ const timing = {
 
 const stepVariants = {
   inactive: {
-    opacity: 0.45,
+    opacity: 0.6,
     scale: 1,
     boxShadow: "0 0 0 rgba(0,0,0,0)",
     borderColor: "rgba(229, 231, 235, 1)",
   },
   active: {
     opacity: 1,
-    scale: 1.02,
-    boxShadow:
-      "0 12px 24px rgba(17, 24, 39, 0.08), 0 0 0 1px rgba(37, 99, 235, 0.2), 0 0 24px rgba(37, 99, 235, 0.12)",
+    scale: 1.01,
+    boxShadow: "0 10px 24px rgba(17, 24, 39, 0.08)",
     borderColor: "rgba(37, 99, 235, 0.25)",
   },
 };
@@ -58,67 +67,82 @@ export function AutomationFlowSection({ className }: AutomationFlowSectionProps)
   }, []);
 
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
-      <div className="rounded-3xl border border-border bg-card p-10">
-        <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground">
-          <span>Automation flow</span>
-          <motion.span
-            className="rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700"
-            animate={{ opacity: [0.6, 1, 0.6] }}
-            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-          >
-            Live
-          </motion.span>
+    <Section className={cn("bg-background", className)}>
+      <Container>
+        <div className="text-center">
+          <h2>How it works</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Intake → Build → Test → Handover
+          </p>
         </div>
 
-        <div className="mt-8 grid gap-3">
-          {steps.map((step, index) => {
-            const isActive = activeStep === index;
+        <div className="mt-10 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
+          <div className="flex h-full min-h-[360px] items-center justify-center rounded-3xl border border-border bg-card p-8 text-sm font-semibold text-muted-foreground">
+            Workflow visual (placeholder)
+          </div>
 
-            return (
-            <motion.div
-              key={step.title}
-              className="rounded-2xl border bg-background px-3 py-4"
-              animate={isActive ? "active" : "inactive"}
-              variants={stepVariants}
-              transition={{
-                duration: timing.transitionSeconds,
-                ease: timing.ease,
-              }}
-            >
-              <div className="grid gap-1">
-                <p className="text-sm font-semibold leading-5 text-foreground">
-                  {step.title}
-                </p>
-                {isActive ? (
-                  <motion.p
-                    key={`desc-${index}-${activeStep}`}
-                    className="text-sm leading-6 text-muted-foreground"
-                    initial={{ clipPath: "inset(0 100% 0 0)" }}
-                    animate={{ clipPath: "inset(0 0 0 0)" }}
+          <div className="flex h-full flex-col justify-between">
+            <div className="grid gap-4">
+              {steps.map((step, index) => {
+                const isActive = activeStep === index;
+
+                return (
+                  <motion.div
+                    key={step.title}
+                    className="rounded-2xl border bg-background px-5 py-4"
+                    animate={isActive ? "active" : "inactive"}
+                    variants={stepVariants}
                     transition={{
-                      duration: 2,
+                      duration: timing.transitionSeconds,
                       ease: timing.ease,
                     }}
                   >
-                    {step.description}
-                  </motion.p>
-                ) : (
-                  <p className="text-sm leading-6 text-muted-foreground">
-                    {step.description}
-                  </p>
-                )}
-              </div>
-            </motion.div>
-            );
-          })}
+                    <div className="grid grid-cols-[32px_1fr] items-start gap-4">
+                      <div
+                        className={cn(
+                          "flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold",
+                          isActive
+                            ? "bg-primary text-primary-foreground"
+                            : "border border-border text-muted-foreground"
+                        )}
+                      >
+                        {index + 1}
+                      </div>
+                      <div className="grid gap-1">
+                        <p className="text-sm font-semibold text-foreground">
+                          {step.title}
+                        </p>
+                        <motion.p
+                          className="text-sm leading-6 text-muted-foreground"
+                          animate={{ opacity: isActive ? 1 : 0.35 }}
+                          transition={{
+                            duration: timing.transitionSeconds,
+                            ease: timing.ease,
+                          }}
+                        >
+                          {step.description}
+                        </motion.p>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <Link
+                className={cn(buttonVariants({ variant: "primary" }))}
+                href="/audit"
+              >
+                Get a free workflow audit
+              </Link>
+              <span className="text-xs text-muted-foreground">
+                🕒 Takes 5 minutes
+              </span>
+            </div>
+          </div>
         </div>
-      </div>
-    </motion.div>
+      </Container>
+    </Section>
   );
 }

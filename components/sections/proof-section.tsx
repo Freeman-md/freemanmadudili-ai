@@ -96,7 +96,7 @@ function ProofCard({ item }: ProofCardProps) {
         <button
           type="button"
           aria-label={`Open ${item.title} details`}
-          className="group relative flex aspect-[3/4] w-full overflow-hidden rounded-none bg-slate-100 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          className="group relative flex aspect-3/4 w-full overflow-hidden rounded-none bg-slate-100 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
         >
           <Image
             src={item.imageSrc}
@@ -106,7 +106,7 @@ function ProofCard({ item }: ProofCardProps) {
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 85vw"
           />
           <div className="absolute inset-x-0 bottom-0 flex h-16 flex-col justify-end bg-black/45 px-5 py-4 text-white backdrop-blur-sm transition-all duration-300 ease-out sm:group-hover:h-32 sm:group-focus-visible:h-32">
-            <h3 className="text-base font-normal leading-6">{item.title}</h3>
+            <h3 className="text-xl font-normal leading-6">{item.title}</h3>
             <p className="mt-2 hidden text-sm font-normal leading-6 text-white/80 opacity-0 transition-opacity duration-300 ease-out sm:block sm:group-hover:opacity-100 sm:group-focus-visible:opacity-100">
               {item.shortDescription}
             </p>
@@ -132,7 +132,7 @@ function ProofCard({ item }: ProofCardProps) {
               </button>
             </DrawerClose>
           </div>
-          <div className="relative mt-6 aspect-[16/10] w-full overflow-hidden rounded-lg bg-slate-100">
+          <div className="relative mt-6 aspect-16/10 w-full overflow-hidden rounded-lg bg-slate-100">
             <Image
               src={item.imageSrc}
               alt={`${item.title} preview`}
@@ -171,7 +171,7 @@ function ProofCarousel({ items }: ProofCarouselProps) {
       opts={{ align: "start", containScroll: "trimSnaps" }}
       className="relative w-full"
     >
-      <CarouselContent className="ml-0 gap-4 sm:gap-5">
+      <CarouselContent className="ml-4 gap-4 sm:gap-5">
         {items.map((item) => (
           <CarouselItem
             key={item.id}

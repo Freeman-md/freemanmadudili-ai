@@ -6,6 +6,7 @@ import { Footer } from "@/components/site/footer";
 import { Header } from "@/components/site/header";
 import { WhoSection } from "@/components/sections/who-section";
 import { ServicesSection } from "@/components/sections/services-section";
+import { ProofSection } from "@/components/sections/proof-section";
 import { FaqSection } from "@/components/sections/faq-section";
 import { FinalCtaSection } from "@/components/sections/final-cta-section";
 
@@ -25,6 +26,7 @@ export default function Home() {
         <AutomationFlowSection />
         <WhoSection />
         <ServicesSection />
+        <ProofSection />
         <FaqSection />
         <FinalCtaSection />
       </main>

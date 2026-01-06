@@ -116,44 +116,62 @@ function ProofCard({ item }: ProofCardProps) {
           </div>
         </button>
       </DrawerTrigger>
-      <DrawerContent className="overflow-y-auto">
-        <div className="mx-auto w-full max-w-3xl px-6 pb-10 pt-6">
-          <div className="flex items-start justify-between gap-6">
-            <DrawerHeader className="space-y-2">
-              <DrawerTitle>{item.title}</DrawerTitle>
-              <DrawerDescription>{item.shortDescription}</DrawerDescription>
-            </DrawerHeader>
-            <DrawerClose asChild>
-              <button
-                type="button"
-                className="text-sm text-slate-500 transition hover:text-slate-700"
-              >
-                Close
-              </button>
-            </DrawerClose>
-          </div>
-          <div className="relative mt-6 aspect-16/10 w-full overflow-hidden rounded-lg bg-slate-100">
-            <Image
-              src={item.imageSrc}
-              alt={`${item.title} preview`}
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 800px, 100vw"
-            />
-          </div>
-          <div className="mt-6 space-y-4 text-sm text-slate-600">
-            <p>
-              <span className="text-slate-900">Problem:</span>{" "}
-              {item.detailedDescription.problem}
-            </p>
-            <p>
-              <span className="text-slate-900">Automated:</span>{" "}
-              {item.detailedDescription.automated}
-            </p>
-            <p>
-              <span className="text-slate-900">Outcome:</span>{" "}
-              {item.detailedDescription.outcome}
-            </p>
+      <DrawerContent className="overflow-hidden">
+        <div className="flex-1 overflow-y-auto overscroll-contain">
+          <div className="mx-auto w-full max-w-3xl px-6 pb-8 pt-6">
+            <div className="flex items-start justify-between gap-6">
+              <div className="space-y-1">
+                <DrawerTitle className="leading-snug">
+                  {item.title}
+                </DrawerTitle>
+                <DrawerDescription className="text-sm leading-6 text-slate-600">
+                  {item.shortDescription}
+                </DrawerDescription>
+              </div>
+              <DrawerClose asChild>
+                <button
+                  type="button"
+                  className="text-sm text-slate-500 transition hover:text-slate-700"
+                >
+                  Close
+                </button>
+              </DrawerClose>
+            </div>
+            <div className="relative mt-6 aspect-[16/10] w-full overflow-hidden rounded-lg bg-slate-100">
+              <Image
+                src={item.imageSrc}
+                alt={`${item.title} preview`}
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 800px, 100vw"
+              />
+            </div>
+            <div className="mt-6 space-y-5 text-sm text-slate-600">
+              <div>
+                <span className="block text-xs uppercase tracking-[0.2em] text-slate-500">
+                  Problem
+                </span>
+                <p className="mt-2 leading-6">
+                  {item.detailedDescription.problem}
+                </p>
+              </div>
+              <div>
+                <span className="block text-xs uppercase tracking-[0.2em] text-slate-500">
+                  Automated
+                </span>
+                <p className="mt-2 leading-6">
+                  {item.detailedDescription.automated}
+                </p>
+              </div>
+              <div>
+                <span className="block text-xs uppercase tracking-[0.2em] text-slate-500">
+                  Outcome
+                </span>
+                <p className="mt-2 leading-6">
+                  {item.detailedDescription.outcome}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </DrawerContent>

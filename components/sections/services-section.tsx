@@ -88,7 +88,7 @@ export function ServicesSection() {
             SERVICES
           </p>
           <h2 className="mt-4 text-3xl font-semibold text-slate-900 sm:text-4xl">
-            Two ways to remove manual work
+           Remove manual work at the right level
           </h2>
           <p className="mt-3 text-base text-slate-600">
             Start with one process, or fix the system behind it.

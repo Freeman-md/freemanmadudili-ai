@@ -199,8 +199,8 @@ function ProofCarousel({ items }: ProofCarouselProps) {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="left-4" />
-      <CarouselNext className="right-4" />
+      <CarouselPrevious className="left-4 z-10 h-12 w-12 border-slate-300/80 bg-white/95 text-slate-800 shadow-md hover:bg-white hover:shadow-lg" />
+      <CarouselNext className="right-4 z-10 h-12 w-12 border-slate-300/80 bg-white/95 text-slate-800 shadow-md hover:bg-white hover:shadow-lg" />
     </Carousel>
   );
 }

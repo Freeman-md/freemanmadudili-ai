@@ -7,28 +7,8 @@ import { motion } from "motion/react";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { buttonVariants } from "@/components/ui/button";
+import { automationFlowSteps } from "@/lib/data/automation-flow-steps";
 import { cn } from "@/lib/utils";
-
-const steps = [
-  {
-    title: "Intake",
-    description:
-      "Capture requests and requirements with no manual back-and-forth.",
-  },
-  {
-    title: "Build",
-    description:
-      "Design and implement the automation based on the agreed workflow.",
-  },
-  {
-    title: "Test",
-    description: "Validate the system end-to-end to ensure reliability.",
-  },
-  {
-    title: "Handover",
-    description: "Deliver documentation and walk-through for confident usage.",
-  },
-];
 
 const timing = {
   intervalMs: 1800,
@@ -60,7 +40,7 @@ export function AutomationFlowSection({ className }: AutomationFlowSectionProps)
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveStep((current) => (current + 1) % steps.length);
+      setActiveStep((current) => (current + 1) % automationFlowSteps.length);
     }, timing.intervalMs);
 
     return () => clearInterval(timer);
@@ -83,7 +63,7 @@ export function AutomationFlowSection({ className }: AutomationFlowSectionProps)
 
           <div className="flex h-full flex-col justify-between">
             <div className="grid gap-4">
-              {steps.map((step, index) => {
+              {automationFlowSteps.map((step, index) => {
                 const isActive = activeStep === index;
 
                 return (

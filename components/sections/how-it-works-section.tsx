@@ -1,24 +1,6 @@
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-
-const steps = [
-  {
-    title: "Audit",
-    description: "We identify where manual work is costing you time and money.",
-  },
-  {
-    title: "Build",
-    description: "I design and implement the automation system.",
-  },
-  {
-    title: "Test",
-    description: "We test with real inputs and edge cases.",
-  },
-  {
-    title: "Handover",
-    description: "You get a clear walkthrough and a working system.",
-  },
-];
+import { howItWorksSteps } from "@/lib/data/how-it-works-steps";
 
 export function HowItWorksSection() {
   return (
@@ -32,7 +14,7 @@ export function HowItWorksSection() {
         </div>
 
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step, index) => (
+          {howItWorksSteps.map((step, index) => (
             <div
               key={step.title}
               className="rounded-2xl border border-border bg-card p-6"

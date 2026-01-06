@@ -3,18 +3,10 @@ import { ArrowUpRight, Check } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
+import { serviceItems, type ServiceItem } from "@/lib/data/service-items";
 import { cn } from "@/lib/utils";
 
-type ServicePanelProps = {
-  title: string;
-  badge: string;
-  description: string;
-  traits: string[];
-  href: string;
-  emphasis?: boolean;
-  metaLine?: string;
-  ctaLabel: string;
-};
+type ServicePanelProps = ServiceItem;
 
 function ServicePanel({
   title,
@@ -96,29 +88,9 @@ export function ServicesSection() {
         </div>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-2">
-          <ServicePanel
-            title="Automation QuickStart"
-            badge="72-hour setup"
-            description="One manual process automated end-to-end in 72 hours."
-            traits={["Fixed scope", "Fast delivery", "No long-term commitment"]}
-            href="/quickstart"
-            metaLine="$497 · fixed price"
-            ctaLabel="View details"
-          />
-          <ServicePanel
-            title="Operations Automation Ecosystem"
-            badge="Audit + custom build"
-            description="Multiple workflows redesigned so manual work stops being a bottleneck."
-            traits={[
-              "Workflow audit",
-              "Multiple automations",
-              "Long-term clarity",
-            ]}
-            href="/audit"
-            emphasis
-            metaLine="Audit first. Custom scope and quote after."
-            ctaLabel="Start with audit"
-          />
+          {serviceItems.map((item) => (
+            <ServicePanel key={item.title} {...item} />
+          ))}
         </div>
       </Container>
     </Section>

@@ -1,12 +1,6 @@
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-
-const signals = [
-  "Same messages answered every day",
-  "Leads slipping through slow follow-ups",
-  "Copying data between tools by hand",
-  "Operations held together by spreadsheets",
-];
+import { whoSignals } from "@/lib/data/who-signals";
 
 export function WhoSection() {
   return (
@@ -23,7 +17,7 @@ export function WhoSection() {
           </p>
         </div>
         <div className="mx-auto mt-6 grid max-w-3xl gap-3 sm:grid-cols-2">
-          {signals.map((item) => (
+          {whoSignals.map((item) => (
             <div
               key={item}
               className="flex items-center gap-4 rounded-xl bg-card px-6 py-3 text-left"

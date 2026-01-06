@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Check } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
@@ -12,6 +12,8 @@ type ServicePanelProps = {
   traits: string[];
   href: string;
   emphasis?: boolean;
+  metaLine?: string;
+  ctaLabel: string;
 };
 
 function ServicePanel({
@@ -21,6 +23,8 @@ function ServicePanel({
   traits,
   href,
   emphasis,
+  metaLine,
+  ctaLabel,
 }: ServicePanelProps) {
   return (
     <Link
@@ -42,18 +46,30 @@ function ServicePanel({
             <p className="mt-3 text-base text-slate-600">{description}</p>
           </div>
         </div>
-        <div className="flex h-11 w-11 flex-none items-center justify-center rounded-full border border-slate-200/80 bg-white text-slate-700 transition duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:shadow-sm">
-          <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        <div className="flex items-center gap-3">
+          <span className="text-xs font-medium text-slate-500 opacity-0 transition duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0.5 ">
+            {ctaLabel}
+          </span>
+          <div className="flex h-11 w-11 flex-none items-center justify-center rounded-full border border-slate-200/80 bg-white text-slate-700 transition duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:shadow-sm">
+            <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </div>
         </div>
       </div>
-      <ul className="mt-8 flex flex-wrap gap-x-4 gap-y-2 text-sm text-slate-500">
-        {traits.map((trait) => (
-          <li key={trait} className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-slate-300" />
-            <span>{trait}</span>
-          </li>
-        ))}
-      </ul>
+      <div className="mt-8 space-y-4">
+        {metaLine ? (
+          <p className="text-sm font-medium text-slate-500">{metaLine}</p>
+        ) : null}
+        <ul className="space-y-3 text-sm text-slate-600">
+          {traits.map((trait) => (
+            <li key={trait} className="flex items-center gap-3">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-slate-200 text-slate-500">
+                <Check className="h-3 w-3" />
+              </span>
+              <span>{trait}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </Link>
   );
 }
@@ -86,6 +102,8 @@ export function ServicesSection() {
             description="One manual process automated end-to-end in 72 hours."
             traits={["Fixed scope", "Fast delivery", "No long-term commitment"]}
             href="/quickstart"
+            metaLine="$497 · fixed price"
+            ctaLabel="View details"
           />
           <ServicePanel
             title="Operations Automation Ecosystem"
@@ -98,6 +116,8 @@ export function ServicesSection() {
             ]}
             href="/audit"
             emphasis
+            metaLine="Audit first. Custom scope and quote after."
+            ctaLabel="Start with audit"
           />
         </div>
       </Container>

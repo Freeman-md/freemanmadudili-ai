@@ -194,13 +194,13 @@ export function ProofSection() {
         <div className="flex flex-col gap-3 text-center sm:text-left lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-xl">
             <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-500">
-              Proof / Demos
+              Proof
             </p>
             <h2 className="mt-4 text-3xl font-semibold text-slate-900 sm:text-4xl">
-              Real automation work, shown simply
+              Systems that replaced manual work
             </h2>
             <p className="mt-3 text-base text-slate-600">
-              Visual demos that show how manual work gets removed.
+              Short demos showing how repetitive operations were turned into reliable workflows.
             </p>
           </div>
         </div>

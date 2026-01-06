@@ -5,6 +5,7 @@ import { AutomationFlowSection } from "@/components/sections/automation-flow-sec
 import { Footer } from "@/components/site/footer";
 import { Header } from "@/components/site/header";
 import { WhoSection } from "@/components/sections/who-section";
+import { ServicesSection } from "@/components/sections/services-section";
 
 export const metadata: Metadata = {
   title: "Automation Sales Hub",
@@ -21,6 +22,7 @@ export default function Home() {
         <HeroSection />
         <AutomationFlowSection />
         <WhoSection />
+        <ServicesSection />
       </main>
 
       <Footer />

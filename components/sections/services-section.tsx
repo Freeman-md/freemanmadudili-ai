@@ -36,7 +36,7 @@ function ServicePanel({
     >
       <div className="flex items-start justify-between gap-6">
         <div className="space-y-4">
-          <span className="inline-flex items-center rounded-full border border-slate-200/80 bg-white/80 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.26em] text-slate-500">
+          <span className="inline-flex items-center rounded-full border border-primary/15 bg-white/80 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.26em] text-slate-500">
             {badge}
           </span>
           <div>
@@ -47,10 +47,10 @@ function ServicePanel({
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs font-medium text-slate-500 opacity-0 transition duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0.5 ">
+          <span className="shrink-0 whitespace-nowrap text-xs font-medium text-slate-500 opacity-0 transition duration-300 ease-out group-hover:translate-x-0.5 group-hover:text-primary/80 group-hover:opacity-100">
             {ctaLabel}
           </span>
-          <div className="flex h-11 w-11 flex-none items-center justify-center rounded-full border border-slate-200/80 bg-white text-slate-700 transition duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:shadow-sm">
+          <div className="flex h-11 w-11 flex-none items-center justify-center rounded-full border border-slate-200/80 bg-white text-slate-700 transition duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:border-primary/30 group-hover:text-primary/80 group-hover:shadow-sm">
             <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </div>
         </div>
@@ -62,7 +62,7 @@ function ServicePanel({
         <ul className="space-y-3 text-sm text-slate-600">
           {traits.map((trait) => (
             <li key={trait} className="flex items-center gap-3">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-slate-200 text-slate-500">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-primary/20 text-primary/70">
                 <Check className="h-3 w-3" />
               </span>
               <span>{trait}</span>

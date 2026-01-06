@@ -7,6 +7,7 @@ import { Header } from "@/components/site/header";
 import { WhoSection } from "@/components/sections/who-section";
 import { ServicesSection } from "@/components/sections/services-section";
 import { FaqSection } from "@/components/sections/faq-section";
+import { FinalCtaSection } from "@/components/sections/final-cta-section";
 
 export const metadata: Metadata = {
   title: "Automation Sales Hub",
@@ -25,6 +26,7 @@ export default function Home() {
         <WhoSection />
         <ServicesSection />
         <FaqSection />
+        <FinalCtaSection />
       </main>
 
       <Footer />

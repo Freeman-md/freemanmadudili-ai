@@ -1,6 +1,6 @@
 export const whoSignals = [
-  "Same messages answered every day",
-  "Leads slipping through slow follow-ups",
+  "Answering the same messages manually, every day",
+  "Losing leads because follow-ups are inconsistent",
   "Copying data between tools by hand",
   "Operations held together by spreadsheets",
 ];

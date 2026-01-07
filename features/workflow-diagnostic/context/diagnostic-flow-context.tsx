@@ -14,13 +14,23 @@ type DiagnosticFlowState = {
   steps: DiagnosticStep[];
   activeStep: number;
   selectedScope: string | null;
+  uploadedFiles: DiagnosticFile[];
+};
+
+export type DiagnosticFile = {
+  id: string;
+  name: string;
+  extension: string;
+  file: File;
 };
 
 type DiagnosticFlowAction =
   | { type: "NEXT" }
   | { type: "PREVIOUS" }
   | { type: "GO_TO"; index: number }
-  | { type: "SET_SCOPE"; scope: string };
+  | { type: "SET_SCOPE"; scope: string }
+  | { type: "ADD_FILES"; files: DiagnosticFile[] }
+  | { type: "REMOVE_FILE"; id: string };
 
 type DiagnosticFlowContextValue = {
   steps: DiagnosticStep[];
@@ -30,10 +40,13 @@ type DiagnosticFlowContextValue = {
   isFirstStep: boolean;
   isLastStep: boolean;
   selectedScope: string | null;
+  uploadedFiles: DiagnosticFile[];
   goNext: () => void;
   goPrevious: () => void;
   goToStep: (index: number) => void;
   setScope: (scope: string) => void;
+  addFiles: (files: DiagnosticFile[]) => void;
+  removeFile: (id: string) => void;
 };
 
 const DiagnosticFlowContext = createContext<DiagnosticFlowContextValue | null>(
@@ -67,6 +80,18 @@ function diagnosticFlowReducer(
     case "SET_SCOPE": {
       return { ...state, selectedScope: action.scope };
     }
+    case "ADD_FILES": {
+      return {
+        ...state,
+        uploadedFiles: [...state.uploadedFiles, ...action.files],
+      };
+    }
+    case "REMOVE_FILE": {
+      return {
+        ...state,
+        uploadedFiles: state.uploadedFiles.filter((file) => file.id !== action.id),
+      };
+    }
     default:
       return state;
   }
@@ -85,6 +110,7 @@ export function DiagnosticFlowProvider({
     steps,
     activeStep: 0,
     selectedScope: null,
+    uploadedFiles: [],
   });
 
   const value = useMemo<DiagnosticFlowContextValue>(() => {
@@ -99,10 +125,13 @@ export function DiagnosticFlowProvider({
       isFirstStep: state.activeStep === 0,
       isLastStep: state.activeStep === totalSteps - 1,
       selectedScope: state.selectedScope,
+      uploadedFiles: state.uploadedFiles,
       goNext: () => dispatch({ type: "NEXT" }),
       goPrevious: () => dispatch({ type: "PREVIOUS" }),
       goToStep: (index: number) => dispatch({ type: "GO_TO", index }),
       setScope: (scope: string) => dispatch({ type: "SET_SCOPE", scope }),
+      addFiles: (files: DiagnosticFile[]) => dispatch({ type: "ADD_FILES", files }),
+      removeFile: (id: string) => dispatch({ type: "REMOVE_FILE", id }),
     };
   }, [state]);
 

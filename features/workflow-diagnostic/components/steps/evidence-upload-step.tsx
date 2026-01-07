@@ -1,14 +1,12 @@
 "use client";
 
+import { Dropzone } from "@/components/ui/dropzone";
 import { evidenceTypes } from "@/features/workflow-diagnostic/data/evidence-types";
 
 export function EvidenceUploadStep() {
   return (
     <div className="grid gap-6">
-      <div className="rounded-2xl border border-dashed border-border bg-background px-6 py-8 text-center text-sm text-muted-foreground">
-        <p className="font-medium text-foreground">Drag & drop files here</p>
-        <p className="mt-2">or click to browse</p>
-      </div>
+      <Dropzone />
 
       <div className="grid gap-3">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">

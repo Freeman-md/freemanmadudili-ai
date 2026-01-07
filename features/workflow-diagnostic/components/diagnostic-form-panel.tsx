@@ -21,12 +21,18 @@ export function DiagnosticFormPanel({
     isFirstStep,
     isLastStep,
     selectedScope,
+    uploadedFiles,
     goNext,
     goPrevious,
   } = useDiagnosticFlow();
   const isLandingStep = currentStep.id === "landing";
   const isScopeStep = currentStep.id === "scope";
-  const isContinueDisabled = isScopeStep ? !selectedScope : isLastStep;
+  const isEvidenceStep = currentStep.id === "evidence_upload";
+  const isContinueDisabled = isEvidenceStep
+    ? uploadedFiles.length === 0
+    : isScopeStep
+    ? !selectedScope
+    : isLastStep;
   const continueLabel =
     currentStep.id === "evidence_upload" ? "Analyze Evidence" : "Continue";
 

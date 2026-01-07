@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import { Upload, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { Trash2, Upload } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -22,20 +23,29 @@ function UploadedFileItem({
   onRemove: (id: string) => void;
 }) {
   return (
-    <div className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3 text-sm">
-      <div className="flex flex-col">
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+      className="group flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3 text-sm"
+    >
+      <div>
         <span className="font-medium text-foreground">{file.name}</span>
-        <span className="text-xs text-muted-foreground">{file.extension}</span>
+        <span className="ml-2 text-xs text-muted-foreground">
+          {file.extension}
+        </span>
       </div>
       <button
         type="button"
-        className="rounded-full p-1 text-muted-foreground transition hover:text-foreground"
+        className="flex h-8 w-8 items-center justify-center rounded-full border border-transparent text-red-500 opacity-60 transition hover:border-red-200 hover:bg-red-50 hover:opacity-100 group-hover:opacity-100"
         onClick={() => onRemove(file.id)}
         aria-label={`Remove ${file.name}`}
       >
-        <X className="h-4 w-4" />
+        <Trash2 className="h-4 w-4" />
       </button>
-    </div>
+    </motion.div>
   );
 }
 
@@ -72,6 +82,20 @@ export function Dropzone({ className }: DropzoneProps) {
         }}
       />
 
+      {uploadedFiles.length ? (
+        <AnimatePresence>
+          <motion.div layout className="grid gap-3">
+            {uploadedFiles.map((file) => (
+              <UploadedFileItem
+                key={file.id}
+                file={file}
+                onRemove={removeFile}
+              />
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      ) : null}
+
       <div
         role="button"
         tabIndex={0}
@@ -100,18 +124,6 @@ export function Dropzone({ className }: DropzoneProps) {
           or click to browse
         </p>
       </div>
-
-      {uploadedFiles.length ? (
-        <div className="grid gap-3">
-          {uploadedFiles.map((file) => (
-            <UploadedFileItem
-              key={file.id}
-              file={file}
-              onRemove={removeFile}
-            />
-          ))}
-        </div>
-      ) : null}
     </div>
   );
 }

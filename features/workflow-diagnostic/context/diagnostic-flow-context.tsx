@@ -14,6 +14,7 @@ import {
   defaultVerdict,
   type DiagnosticVerdict,
 } from "@/features/workflow-diagnostic/data/verdict";
+import type { DiagnosticDecision } from "@/features/workflow-diagnostic/types/decision";
 
 type DiagnosticFlowState = {
   steps: DiagnosticStep[];
@@ -25,6 +26,7 @@ type DiagnosticFlowState = {
   activeClarifyingRoundId?: string;
   clarifyingRoundOrder: string[];
   verdict: DiagnosticVerdict;
+  decision: DiagnosticDecision | null;
 };
 
 export type DiagnosticFile = {
@@ -46,6 +48,7 @@ type DiagnosticFlowAction =
   | { type: "SET_CLARIFYING_ANSWER"; roundId: string; key: string; value: unknown }
   | { type: "RESET_CLARIFYING_ROUND"; roundId?: string }
   | { type: "SET_VERDICT"; verdict: DiagnosticVerdict }
+  | { type: "SET_DECISION"; decision: DiagnosticDecision }
   | { type: "RESET_DIAGNOSTIC_FLOW" };
 
 type DiagnosticFlowContextValue = {
@@ -62,6 +65,7 @@ type DiagnosticFlowContextValue = {
   activeClarifyingRoundId?: string;
   clarifyingRoundOrder: string[];
   verdict: DiagnosticVerdict;
+  decision: DiagnosticDecision | null;
   goNext: () => void;
   goPrevious: () => void;
   goToStep: (index: number) => void;
@@ -73,6 +77,7 @@ type DiagnosticFlowContextValue = {
   setClarifyingAnswer: (roundId: string, key: string, value: unknown) => void;
   resetClarifyingRound: (roundId?: string) => void;
   setVerdict: (verdict: DiagnosticVerdict) => void;
+  setDecision: (decision: DiagnosticDecision) => void;
   resetDiagnosticFlow: () => void;
 };
 
@@ -188,6 +193,9 @@ function diagnosticFlowReducer(
     case "SET_VERDICT": {
       return { ...state, verdict: action.verdict };
     }
+    case "SET_DECISION": {
+      return { ...state, decision: action.decision };
+    }
     case "RESET_DIAGNOSTIC_FLOW": {
       return {
         ...state,
@@ -199,6 +207,7 @@ function diagnosticFlowReducer(
         activeClarifyingRoundId: undefined,
         clarifyingRoundOrder: [],
         verdict: defaultVerdict,
+        decision: null,
       };
     }
     default:
@@ -225,6 +234,7 @@ export function DiagnosticFlowProvider({
     activeClarifyingRoundId: undefined,
     clarifyingRoundOrder: [],
     verdict: defaultVerdict,
+    decision: null,
   });
 
   const value = useMemo<DiagnosticFlowContextValue>(() => {
@@ -245,6 +255,7 @@ export function DiagnosticFlowProvider({
       activeClarifyingRoundId: state.activeClarifyingRoundId,
       clarifyingRoundOrder: state.clarifyingRoundOrder,
       verdict: state.verdict,
+      decision: state.decision,
       goNext: () => dispatch({ type: "NEXT" }),
       goPrevious: () => dispatch({ type: "PREVIOUS" }),
       goToStep: (index: number) => dispatch({ type: "GO_TO", index }),
@@ -261,6 +272,8 @@ export function DiagnosticFlowProvider({
         dispatch({ type: "RESET_CLARIFYING_ROUND", roundId }),
       setVerdict: (verdict: DiagnosticVerdict) =>
         dispatch({ type: "SET_VERDICT", verdict }),
+      setDecision: (decision: DiagnosticDecision) =>
+        dispatch({ type: "SET_DECISION", decision }),
       resetDiagnosticFlow: () => dispatch({ type: "RESET_DIAGNOSTIC_FLOW" }),
     };
   }, [state]);

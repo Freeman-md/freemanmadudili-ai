@@ -7,6 +7,7 @@ import { processingSteps } from "@/features/workflow-diagnostic/data/processing-
 import { ClarifyingQuestionsStep } from "./steps/clarifying-questions-step";
 import { DeepAnalysisStep } from "./steps/deep-analysis-step";
 import { DiagnosticVerdictStep } from "./steps/diagnostic-verdict-step";
+import { DecisionGateStep } from "./steps/decision-gate-step";
 
 type DiagnosticStepContentProps = {
   step: DiagnosticStep;
@@ -50,6 +51,10 @@ export function DiagnosticStepContent({ step }: DiagnosticStepContentProps) {
 
   if (step.id === "verdict") {
     return <DiagnosticVerdictStep />;
+  }
+
+  if (step.id === "decision") {
+    return <DecisionGateStep />;
   }
 
   return <PlaceholderStep title={step.title} />;

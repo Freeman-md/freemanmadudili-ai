@@ -30,6 +30,7 @@ export function DiagnosticFormPanel({
   const isDeepAnalysisStep = currentStep.id === "deep_analysis";
   const isClarifyingStep = currentStep.id === "clarifying_inputs";
   const isVerdictStep = currentStep.id === "verdict";
+  const isDecisionStep = currentStep.id === "decision";
   const isScopeStep = currentStep.id === "scope";
   const isEvidenceStep = currentStep.id === "evidence_upload";
   const isContinueDisabled = isEvidenceStep
@@ -84,7 +85,8 @@ export function DiagnosticFormPanel({
         !isProcessingStep &&
         !isDeepAnalysisStep &&
         !isClarifyingStep &&
-        !isVerdictStep && (
+        !isVerdictStep &&
+        !isDecisionStep && (
         <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
           <Button
             variant="secondary"

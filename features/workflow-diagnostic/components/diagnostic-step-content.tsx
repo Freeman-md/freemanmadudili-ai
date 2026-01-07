@@ -6,6 +6,7 @@ import { InitialProcessingStep } from "./steps/initial-processing-step";
 import { processingSteps } from "@/features/workflow-diagnostic/data/processing-steps";
 import { ClarifyingQuestionsStep } from "./steps/clarifying-questions-step";
 import { DeepAnalysisStep } from "./steps/deep-analysis-step";
+import { DiagnosticVerdictStep } from "./steps/diagnostic-verdict-step";
 
 type DiagnosticStepContentProps = {
   step: DiagnosticStep;
@@ -45,6 +46,10 @@ export function DiagnosticStepContent({ step }: DiagnosticStepContentProps) {
 
   if (step.id === "deep_analysis") {
     return <DeepAnalysisStep />;
+  }
+
+  if (step.id === "verdict") {
+    return <DiagnosticVerdictStep />;
   }
 
   return <PlaceholderStep title={step.title} />;

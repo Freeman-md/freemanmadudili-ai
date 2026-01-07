@@ -27,6 +27,8 @@ export function DiagnosticFormPanel({
   const isLandingStep = currentStep.id === "landing";
   const isScopeStep = currentStep.id === "scope";
   const isContinueDisabled = isScopeStep ? !selectedScope : isLastStep;
+  const continueLabel =
+    currentStep.id === "evidence_upload" ? "Analyze Evidence" : "Continue";
 
   return (
     <div className={cn("rounded-3xl bg-card p-8 place-content-center", className)}>
@@ -79,7 +81,7 @@ export function DiagnosticFormPanel({
                 Back
               </Button>
               <Button onClick={goNext} disabled={isContinueDisabled}>
-                Continue
+                {continueLabel}
               </Button>
             </div>
           )}

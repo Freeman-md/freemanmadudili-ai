@@ -1,0 +1,33 @@
+"use client";
+
+import { evidenceTypes } from "@/features/workflow-diagnostic/data/evidence-types";
+
+export function EvidenceUploadStep() {
+  return (
+    <div className="grid gap-6">
+      <div className="rounded-2xl border border-dashed border-border bg-background px-6 py-8 text-center text-sm text-muted-foreground">
+        <p className="font-medium text-foreground">Drag & drop files here</p>
+        <p className="mt-2">or click to browse</p>
+      </div>
+
+      <div className="grid gap-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+          Supported evidence
+        </p>
+        <div className="flex flex-wrap gap-3">
+          {evidenceTypes.map(({ label, icon: Icon }) => (
+            <div
+              key={label}
+              className="flex items-center gap-3 rounded-full bg-muted px-4 py-2 text-sm text-foreground"
+            >
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-background text-foreground">
+                <Icon className="h-4 w-4" />
+              </span>
+              <span className="font-medium">{label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

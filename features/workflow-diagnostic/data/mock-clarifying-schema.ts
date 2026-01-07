@@ -57,7 +57,7 @@ const roundOneFields: ClarifyingQuestionsSchema["fields"] = [
     label: "Which file shows handoff time?",
     inputType: "file_ref",
     fileRef: {
-      allow: "csv",
+      allow: "any",
       maxSelections: 1,
     },
     validation: { required: true },

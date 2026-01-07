@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "motion/react";
+
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { DiagnosticStep } from "@/features/workflow-diagnostic/data/steps";
@@ -37,9 +41,27 @@ export function DiagnosticFormPanel({
 
       <div className="mt-6 flex items-center justify-between text-xs text-muted-foreground">
         <span>
-          Step {activeStep + 1} of {steps.length}
+          Step{" "}
+          <motion.span
+            key={`form-step-${activeStep}`}
+            className="inline-block font-semibold text-foreground"
+            initial={{ rotateX: 90, opacity: 0 }}
+            animate={{ rotateX: 0, opacity: 1 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            {activeStep + 1}
+          </motion.span>{" "}
+          of {steps.length}
         </span>
-        <span className="font-semibold text-foreground">{currentStep.title}</span>
+        <motion.span
+          key={`form-title-${currentStep.id}`}
+          className="font-semibold text-foreground"
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          {currentStep.title}
+        </motion.span>
       </div>
 
       <div className="mt-6">

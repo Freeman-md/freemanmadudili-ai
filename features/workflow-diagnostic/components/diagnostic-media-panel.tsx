@@ -1,8 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "motion/react";
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 import type { DiagnosticStep } from "@/features/workflow-diagnostic/data/steps";
 import { ProgressDots } from "@/features/workflow-diagnostic/components/progress-dots";
@@ -36,10 +42,36 @@ function MediaCard({ step, activeStep, totalSteps, showDots, className }: MediaC
       <div className="absolute inset-x-0 bottom-0 p-6">
         <div className="rounded-2xl bg-background p-5">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            Step {activeStep + 1} of {totalSteps}
+            Step{" "}
+            <motion.span
+              key={`media-step-${activeStep}`}
+              className="inline-block text-foreground"
+              initial={{ rotateX: 90, opacity: 0 }}
+              animate={{ rotateX: 0, opacity: 1 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
+              {activeStep + 1}
+            </motion.span>{" "}
+            of {totalSteps}
           </p>
-          <h3 className="mt-2 text-lg font-semibold text-foreground">{step.title}</h3>
-          <p className="mt-2 text-sm text-muted-foreground">{step.description}</p>
+          <motion.h3
+            key={`media-title-${step.id}`}
+            className="mt-2 text-lg font-semibold text-foreground"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            {step.title}
+          </motion.h3>
+          <motion.p
+            key={`media-desc-${step.id}`}
+            className="mt-2 text-sm text-muted-foreground"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+          >
+            {step.description}
+          </motion.p>
           {showDots ? (
             <ProgressDots className="mt-4" total={totalSteps} activeIndex={activeStep} />
           ) : null}
@@ -74,11 +106,24 @@ export function DiagnosticMediaPanel({
           <AccordionItem value="media" className="border border-border rounded-2xl bg-card px-4">
             <AccordionTrigger className="py-3 text-sm font-semibold text-foreground hover:no-underline">
               <div className="flex w-full items-center justify-between gap-4">
-                <span>{step.title}</span>
+                <motion.span
+                  key={`accordion-title-${step.id}`}
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.25, ease: "easeInOut" }}
+                >
+                  {step.title}
+                </motion.span>
                 {!isOpen ? (
-                  <span className="text-xs font-semibold text-muted-foreground">
+                  <motion.span
+                    key={`accordion-step-${activeStep}`}
+                    className="text-xs font-semibold text-muted-foreground"
+                    initial={{ rotateX: 90, opacity: 0 }}
+                    animate={{ rotateX: 0, opacity: 1 }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                  >
                     Step {activeStep + 1}
-                  </span>
+                  </motion.span>
                 ) : null}
               </div>
             </AccordionTrigger>

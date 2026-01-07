@@ -1,5 +1,4 @@
-import { Check } from "lucide-react";
-
+import { CheckmarkCircle } from "@/components/ui/checkmark-circle";
 import { cn } from "@/lib/utils";
 
 type StatusIndicatorState = "pending" | "active" | "complete";
@@ -11,9 +10,9 @@ type StatusIndicatorProps = {
 };
 
 const sizeClasses = {
-  sm: "h-4 w-4",
-  md: "h-5 w-5",
-  lg: "h-6 w-6",
+  sm: "h-6 w-6",
+  md: "h-7 w-7",
+  lg: "h-8 w-8",
 };
 
 export function StatusIndicator({
@@ -22,17 +21,7 @@ export function StatusIndicator({
   className,
 }: StatusIndicatorProps) {
   if (state === "complete") {
-    return (
-      <span
-        className={cn(
-          "flex items-center justify-center rounded-full bg-primary/10 text-primary",
-          sizeClasses[size],
-          className
-        )}
-      >
-        <Check className="h-3 w-3" strokeWidth={3} />
-      </span>
-    );
+    return <CheckmarkCircle size={size} className={className} />;
   }
 
   if (state === "active") {

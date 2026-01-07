@@ -1,7 +1,6 @@
-import { Check } from "lucide-react";
-
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
+import { CheckmarkCircle } from "@/components/ui/checkmark-circle";
 import { whoSignals } from "@/lib/data/who-signals";
 
 export function WhoSection() {
@@ -26,9 +25,7 @@ export function WhoSection() {
               key={item}
               className="group flex items-center gap-5 rounded-2xl border border-slate-200/80 bg-white/80 px-6 py-4 text-left transition duration-200 ease-out hover:border-slate-300/80"
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white shrink-0">
-                <Check className="h-4 w-4" />
-              </span>
+              <CheckmarkCircle size="lg" className="shrink-0" />
               <p className="text-base font-medium text-slate-800">{item}</p>
             </div>
           ))}

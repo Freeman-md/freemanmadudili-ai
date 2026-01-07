@@ -1,8 +1,7 @@
 "use client";
 
-import { Check } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
+import { CheckmarkCircle } from "@/components/ui/checkmark-circle";
 import { cn } from "@/lib/utils";
 import { useDiagnosticFlow } from "@/features/workflow-diagnostic/context/diagnostic-flow-context";
 
@@ -45,9 +44,7 @@ export function ExpectationList({ items, className }: ExpectationListProps) {
         <div className={cn("grid gap-3", className)}>
             {items.map((item) => (
                 <div key={item} className="flex items-center gap-3">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                        <Check className="h-4 w-4" strokeWidth={3} />
-                    </span>
+                    <CheckmarkCircle size="md" />
                     <span className="text-sm font-medium text-foreground">{item}</span>
                 </div>
             ))}

@@ -20,7 +20,7 @@ export function WorkflowDiagnosticPage() {
   return (
     <div className="min-h-screen bg-white">
       <Container className="py-8 lg:py-0 px-0!">
-        <div className="grid lg:min-h-screen lg:grid-cols-[2fr_3fr] lg:gap-8">
+        <div className="grid lg:min-h-screen lg:grid-cols-[2fr_3fr]">
           <DiagnosticMediaPanel
             className="order-1"
             step={currentStep}

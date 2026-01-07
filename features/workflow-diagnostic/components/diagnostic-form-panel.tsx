@@ -29,7 +29,7 @@ export function DiagnosticFormPanel({
   onPrevious,
 }: DiagnosticFormPanelProps) {
   return (
-    <div className={cn("bg-card p-8 place-content-center", className)}>
+    <div className={cn("rounded-3xl bg-card p-8 place-content-center", className)}>
       <div className="grid gap-2">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
           Free workflow diagnostic
@@ -65,7 +65,7 @@ export function DiagnosticFormPanel({
       </div>
 
       <div className="mt-6">
-        <DiagnosticStepContent step={currentStep} />
+        <DiagnosticStepContent onNext={onNext} step={currentStep} />
       </div>
 
       <div className="mt-8 flex flex-wrap items-center justify-between gap-3">

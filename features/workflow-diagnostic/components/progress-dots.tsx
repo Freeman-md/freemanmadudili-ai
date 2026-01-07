@@ -16,8 +16,8 @@ export function ProgressDots({ total, activeIndex, className }: ProgressDotsProp
           <span
             key={`dot-${index}`}
             className={cn(
-              "h-2 w-2 rounded-full border border-border",
-              isActive ? "w-8! bg-primary border-primary" : "bg-transparent"
+              "h-2 rounded-full border border-border transition-all duration-300 ease-in-out",
+              isActive ? "w-8 bg-primary border-primary" : "w-2 bg-transparent"
             )}
           />
         );

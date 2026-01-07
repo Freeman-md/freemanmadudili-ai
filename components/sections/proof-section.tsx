@@ -42,7 +42,7 @@ function ProofCard({ item }: ProofCardProps) {
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 85vw"
           />
           <div className="absolute inset-x-0 bottom-0 flex h-16 flex-col justify-end bg-black/45 px-5 py-4 text-white backdrop-blur-sm transition-all duration-300 ease-out sm:group-hover:h-32 sm:group-focus-visible:h-32">
-            <h3 className="text-xl font-normal leading-6">{item.title}</h3>
+            <h3 className="text-xl font-normal leading-6 text-black">{item.title}</h3>
             <p className="mt-2 hidden text-sm font-normal leading-6 text-white/80 opacity-0 transition-opacity duration-300 ease-out sm:block sm:group-hover:opacity-100 sm:group-focus-visible:opacity-100">
               {item.shortDescription}
             </p>

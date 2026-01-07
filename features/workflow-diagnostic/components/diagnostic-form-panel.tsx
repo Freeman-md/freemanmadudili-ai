@@ -20,10 +20,13 @@ export function DiagnosticFormPanel({
     currentStep,
     isFirstStep,
     isLastStep,
+    selectedScope,
     goNext,
     goPrevious,
   } = useDiagnosticFlow();
   const isLandingStep = currentStep.id === "landing";
+  const isScopeStep = currentStep.id === "scope";
+  const isContinueDisabled = isScopeStep ? !selectedScope : isLastStep;
 
   return (
     <div className={cn("rounded-3xl bg-card p-8 place-content-center", className)}>
@@ -66,20 +69,20 @@ export function DiagnosticFormPanel({
             <DiagnosticStepContent step={currentStep} />
           </div>
 
-          {
-            !isLandingStep && <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
-            <Button
-              variant="secondary"
-              onClick={goPrevious}
-              disabled={isFirstStep}
-            >
-              Back
-            </Button>
-            <Button onClick={goNext} disabled={isLastStep}>
-              Continue
-            </Button>
-          </div>
-          }
+          {!isLandingStep && (
+            <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
+              <Button
+                variant="secondary"
+                onClick={goPrevious}
+                disabled={isFirstStep}
+              >
+                Back
+              </Button>
+              <Button onClick={goNext} disabled={isContinueDisabled}>
+                Continue
+              </Button>
+            </div>
+          )}
     </div>
   );
 }

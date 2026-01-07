@@ -13,12 +13,14 @@ import type { DiagnosticStep } from "@/features/workflow-diagnostic/data/steps";
 type DiagnosticFlowState = {
   steps: DiagnosticStep[];
   activeStep: number;
+  selectedScope: string | null;
 };
 
 type DiagnosticFlowAction =
   | { type: "NEXT" }
   | { type: "PREVIOUS" }
-  | { type: "GO_TO"; index: number };
+  | { type: "GO_TO"; index: number }
+  | { type: "SET_SCOPE"; scope: string };
 
 type DiagnosticFlowContextValue = {
   steps: DiagnosticStep[];
@@ -27,9 +29,11 @@ type DiagnosticFlowContextValue = {
   totalSteps: number;
   isFirstStep: boolean;
   isLastStep: boolean;
+  selectedScope: string | null;
   goNext: () => void;
   goPrevious: () => void;
   goToStep: (index: number) => void;
+  setScope: (scope: string) => void;
 };
 
 const DiagnosticFlowContext = createContext<DiagnosticFlowContextValue | null>(
@@ -60,6 +64,9 @@ function diagnosticFlowReducer(
       );
       return { ...state, activeStep: clampedIndex };
     }
+    case "SET_SCOPE": {
+      return { ...state, selectedScope: action.scope };
+    }
     default:
       return state;
   }
@@ -77,6 +84,7 @@ export function DiagnosticFlowProvider({
   const [state, dispatch] = useReducer(diagnosticFlowReducer, {
     steps,
     activeStep: 0,
+    selectedScope: null,
   });
 
   const value = useMemo<DiagnosticFlowContextValue>(() => {
@@ -90,9 +98,11 @@ export function DiagnosticFlowProvider({
       totalSteps,
       isFirstStep: state.activeStep === 0,
       isLastStep: state.activeStep === totalSteps - 1,
+      selectedScope: state.selectedScope,
       goNext: () => dispatch({ type: "NEXT" }),
       goPrevious: () => dispatch({ type: "PREVIOUS" }),
       goToStep: (index: number) => dispatch({ type: "GO_TO", index }),
+      setScope: (scope: string) => dispatch({ type: "SET_SCOPE", scope }),
     };
   }, [state]);
 

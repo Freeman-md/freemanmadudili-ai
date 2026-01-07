@@ -27,6 +27,7 @@ export function DiagnosticFormPanel({
   } = useDiagnosticFlow();
   const isLandingStep = currentStep.id === "landing";
   const isProcessingStep = currentStep.id === "initial_processing";
+  const isClarifyingStep = currentStep.id === "clarifying_inputs";
   const isScopeStep = currentStep.id === "scope";
   const isEvidenceStep = currentStep.id === "evidence_upload";
   const isContinueDisabled = isEvidenceStep
@@ -78,7 +79,7 @@ export function DiagnosticFormPanel({
             <DiagnosticStepContent step={currentStep} />
           </div>
 
-          {!isLandingStep && !isProcessingStep && (
+          {!isLandingStep && !isProcessingStep && !isClarifyingStep && (
             <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
               <Button
                 variant="secondary"

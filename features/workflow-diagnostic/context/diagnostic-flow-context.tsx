@@ -9,12 +9,16 @@ import {
 } from "react";
 
 import type { DiagnosticStep } from "@/features/workflow-diagnostic/data/steps";
+import type { ClarifyingQuestionsSchema } from "@/features/workflow-diagnostic/types/clarifying-schema";
 
 type DiagnosticFlowState = {
   steps: DiagnosticStep[];
   activeStep: number;
   selectedScope: string | null;
   uploadedFiles: DiagnosticFile[];
+  clarifyingSchemasByRound: Record<string, ClarifyingQuestionsSchema>;
+  clarifyingAnswersByRound: Record<string, Record<string, unknown>>;
+  activeClarifyingRoundId?: string;
 };
 
 export type DiagnosticFile = {
@@ -30,7 +34,11 @@ type DiagnosticFlowAction =
   | { type: "GO_TO"; index: number }
   | { type: "SET_SCOPE"; scope: string }
   | { type: "ADD_FILES"; files: DiagnosticFile[] }
-  | { type: "REMOVE_FILE"; id: string };
+  | { type: "REMOVE_FILE"; id: string }
+  | { type: "SET_CLARIFYING_SCHEMA"; schema: ClarifyingQuestionsSchema }
+  | { type: "SET_ACTIVE_CLARIFYING_ROUND"; roundId: string }
+  | { type: "SET_CLARIFYING_ANSWER"; roundId: string; key: string; value: unknown }
+  | { type: "RESET_CLARIFYING_ROUND"; roundId?: string };
 
 type DiagnosticFlowContextValue = {
   steps: DiagnosticStep[];
@@ -41,12 +49,19 @@ type DiagnosticFlowContextValue = {
   isLastStep: boolean;
   selectedScope: string | null;
   uploadedFiles: DiagnosticFile[];
+  clarifyingSchemasByRound: Record<string, ClarifyingQuestionsSchema>;
+  clarifyingAnswersByRound: Record<string, Record<string, unknown>>;
+  activeClarifyingRoundId?: string;
   goNext: () => void;
   goPrevious: () => void;
   goToStep: (index: number) => void;
   setScope: (scope: string) => void;
   addFiles: (files: DiagnosticFile[]) => void;
   removeFile: (id: string) => void;
+  setClarifyingSchema: (schema: ClarifyingQuestionsSchema) => void;
+  setActiveClarifyingRound: (roundId: string) => void;
+  setClarifyingAnswer: (roundId: string, key: string, value: unknown) => void;
+  resetClarifyingRound: (roundId?: string) => void;
 };
 
 const DiagnosticFlowContext = createContext<DiagnosticFlowContextValue | null>(
@@ -92,6 +107,61 @@ function diagnosticFlowReducer(
         uploadedFiles: state.uploadedFiles.filter((file) => file.id !== action.id),
       };
     }
+    case "SET_CLARIFYING_SCHEMA": {
+      return {
+        ...state,
+        clarifyingSchemasByRound: {
+          ...state.clarifyingSchemasByRound,
+          [action.schema.roundId]: action.schema,
+        },
+      };
+    }
+    case "SET_ACTIVE_CLARIFYING_ROUND": {
+      return {
+        ...state,
+        activeClarifyingRoundId: action.roundId,
+      };
+    }
+    case "SET_CLARIFYING_ANSWER": {
+      const currentRoundAnswers =
+        state.clarifyingAnswersByRound[action.roundId] ?? {};
+
+      return {
+        ...state,
+        clarifyingAnswersByRound: {
+          ...state.clarifyingAnswersByRound,
+          [action.roundId]: {
+            ...currentRoundAnswers,
+            [action.key]: action.value,
+          },
+        },
+      };
+    }
+    case "RESET_CLARIFYING_ROUND": {
+      if (!action.roundId) {
+        return {
+          ...state,
+          clarifyingSchemasByRound: {},
+          clarifyingAnswersByRound: {},
+          activeClarifyingRoundId: undefined,
+        };
+      }
+
+      const { [action.roundId]: _, ...remainingSchemas } =
+        state.clarifyingSchemasByRound;
+      const { [action.roundId]: __, ...remainingAnswers } =
+        state.clarifyingAnswersByRound;
+
+      return {
+        ...state,
+        clarifyingSchemasByRound: remainingSchemas,
+        clarifyingAnswersByRound: remainingAnswers,
+        activeClarifyingRoundId:
+          state.activeClarifyingRoundId === action.roundId
+            ? undefined
+            : state.activeClarifyingRoundId,
+      };
+    }
     default:
       return state;
   }
@@ -111,6 +181,9 @@ export function DiagnosticFlowProvider({
     activeStep: 0,
     selectedScope: null,
     uploadedFiles: [],
+    clarifyingSchemasByRound: {},
+    clarifyingAnswersByRound: {},
+    activeClarifyingRoundId: undefined,
   });
 
   const value = useMemo<DiagnosticFlowContextValue>(() => {
@@ -126,12 +199,23 @@ export function DiagnosticFlowProvider({
       isLastStep: state.activeStep === totalSteps - 1,
       selectedScope: state.selectedScope,
       uploadedFiles: state.uploadedFiles,
+      clarifyingSchemasByRound: state.clarifyingSchemasByRound,
+      clarifyingAnswersByRound: state.clarifyingAnswersByRound,
+      activeClarifyingRoundId: state.activeClarifyingRoundId,
       goNext: () => dispatch({ type: "NEXT" }),
       goPrevious: () => dispatch({ type: "PREVIOUS" }),
       goToStep: (index: number) => dispatch({ type: "GO_TO", index }),
       setScope: (scope: string) => dispatch({ type: "SET_SCOPE", scope }),
       addFiles: (files: DiagnosticFile[]) => dispatch({ type: "ADD_FILES", files }),
       removeFile: (id: string) => dispatch({ type: "REMOVE_FILE", id }),
+      setClarifyingSchema: (schema: ClarifyingQuestionsSchema) =>
+        dispatch({ type: "SET_CLARIFYING_SCHEMA", schema }),
+      setActiveClarifyingRound: (roundId: string) =>
+        dispatch({ type: "SET_ACTIVE_CLARIFYING_ROUND", roundId }),
+      setClarifyingAnswer: (roundId: string, key: string, value: unknown) =>
+        dispatch({ type: "SET_CLARIFYING_ANSWER", roundId, key, value }),
+      resetClarifyingRound: (roundId?: string) =>
+        dispatch({ type: "RESET_CLARIFYING_ROUND", roundId }),
     };
   }, [state]);
 

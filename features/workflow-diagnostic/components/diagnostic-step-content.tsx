@@ -3,7 +3,6 @@ import { LandingStep } from "./steps/landing-step";
 
 type DiagnosticStepContentProps = {
   step: DiagnosticStep;
-  onNext: () => void
 };
 
 function PlaceholderStep({ title }: { title: string }) {
@@ -17,9 +16,9 @@ function PlaceholderStep({ title }: { title: string }) {
   );
 }
 
-export function DiagnosticStepContent({ step, onNext }: DiagnosticStepContentProps) {
+export function DiagnosticStepContent({ step }: DiagnosticStepContentProps) {
   if (step.id === "landing") {
-    return <LandingStep onNext={onNext} />;
+    return <LandingStep />;
   }
 
   return <PlaceholderStep title={step.title} />;

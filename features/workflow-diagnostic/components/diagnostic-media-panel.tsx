@@ -10,18 +10,19 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
-import type { DiagnosticStep } from "@/features/workflow-diagnostic/data/steps";
 import { ProgressDots } from "@/features/workflow-diagnostic/components/progress-dots";
+import { useDiagnosticFlow } from "@/features/workflow-diagnostic/context/diagnostic-flow-context";
 
 type DiagnosticMediaPanelProps = {
   className?: string;
-  step: DiagnosticStep;
-  activeStep: number;
-  totalSteps: number;
 };
 
 type MediaCardProps = {
-  step: DiagnosticStep;
+  step: {
+    id: string;
+    title: string;
+    description: string;
+  };
   activeStep: number;
   totalSteps: number;
   showDots: boolean;
@@ -83,17 +84,20 @@ function MediaCard({ step, activeStep, totalSteps, showDots, className }: MediaC
 
 export function DiagnosticMediaPanel({
   className,
-  step,
-  activeStep,
-  totalSteps,
 }: DiagnosticMediaPanelProps) {
+  const { currentStep, activeStep, totalSteps } = useDiagnosticFlow();
   const [openItem, setOpenItem] = useState<string | undefined>("media");
   const isOpen = openItem === "media";
 
   return (
     <div className={cn("w-full", className)}>
       <div className="hidden lg:h-full lg:block">
-        <MediaCard step={step} activeStep={activeStep} totalSteps={totalSteps} showDots />
+        <MediaCard
+          step={currentStep}
+          activeStep={activeStep}
+          totalSteps={totalSteps}
+          showDots
+        />
       </div>
 
       <div className="lg:hidden">
@@ -110,12 +114,12 @@ export function DiagnosticMediaPanel({
             <AccordionTrigger className="px-4 py-3 text-sm font-semibold text-foreground hover:no-underline">
               <div className="flex w-full items-center justify-between gap-4">
                 <motion.span
-                  key={`accordion-title-${step.id}`}
+                  key={`accordion-title-${currentStep.id}`}
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.25, ease: "easeInOut" }}
                 >
-                  {step.title}
+                  {currentStep.title}
                 </motion.span>
                 {!isOpen ? (
                   <motion.span
@@ -133,7 +137,7 @@ export function DiagnosticMediaPanel({
             <AccordionContent className="pb-0 transition-opacity data-[state=closed]:opacity-0 data-[state=open]:opacity-100">
               <MediaCard
                 className="min-h-65"
-                step={step}
+                step={currentStep}
                 activeStep={activeStep}
                 totalSteps={totalSteps}
                 showDots={isOpen}

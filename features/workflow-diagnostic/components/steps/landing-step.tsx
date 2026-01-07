@@ -1,15 +1,15 @@
+"use client";
+
+import { Check } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Check } from "lucide-react";
+import { useDiagnosticFlow } from "@/features/workflow-diagnostic/context/diagnostic-flow-context";
 
 type ExpectationListProps = {
     items: string[];
     className?: string;
 };
-
-type LandingStepProps = {
-    onNext: () => void
-}
 
 export const expectationBullets = [
     "We diagnose one workflow only",
@@ -20,15 +20,24 @@ export const expectationBullets = [
 export const landingHints = ["Takes ~5–7 minutes", "No signup required"];
 
 
-export function LandingStep({
-    onNext
-}: LandingStepProps) {
+export function LandingStep() {
+   const { goNext } = useDiagnosticFlow();
+
    return (
      <div className="grid gap-6">
+        <div className="grid gap-2">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            Workflow Diagnostics
+          </p>
+          <h1 className="text-2xl font-semibold text-foreground">
+            Workflow Diagnostics
+          </h1>
+        </div>
+
         <ExpectationList items={expectationBullets} />
 
         <div className="grid gap-3">
-            <Button className="w-full" onClick={onNext}>
+            <Button className="w-full" onClick={goNext}>
                 Start Diagnostic
             </Button>
             <div className="text-center text-xs text-muted-foreground">

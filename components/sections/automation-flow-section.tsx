@@ -111,7 +111,7 @@ export function AutomationFlowSection({ className }: AutomationFlowSectionProps)
 
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <Link
-                className={cn(buttonVariants({ variant: "primary" }))}
+                className={cn(buttonVariants({ variant: "secondary" }))}
                 href="/audit"
               >
                 Get a free workflow audit

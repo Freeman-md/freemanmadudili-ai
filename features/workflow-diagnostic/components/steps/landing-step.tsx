@@ -17,7 +17,7 @@ export const expectationBullets = [
     "You’ll receive a verdict, not a solution",
 ];
 
-export const landingHints = ["Takes ~5–7 minutes", "No signup required"];
+export const landingHints = ["🕒 Takes ~5-7 minutes", "No signup required"];
 
 
 export function LandingStep() {
@@ -25,15 +25,6 @@ export function LandingStep() {
 
    return (
      <div className="grid gap-6">
-        <div className="grid gap-2">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            Workflow Diagnostics
-          </p>
-          <h1 className="text-2xl font-semibold text-foreground">
-            Workflow Diagnostics
-          </h1>
-        </div>
-
         <ExpectationList items={expectationBullets} />
 
         <div className="grid gap-3">

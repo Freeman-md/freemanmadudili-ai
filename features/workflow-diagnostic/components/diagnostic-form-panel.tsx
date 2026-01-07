@@ -27,10 +27,7 @@ export function DiagnosticFormPanel({
 
   return (
     <div className={cn("rounded-3xl bg-card p-8 place-content-center", className)}>
-      {isLandingStep ? (
-        <DiagnosticStepContent step={currentStep} />
-      ) : (
-        <>
+      
           <div className="grid gap-2">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
               Free workflow diagnostic
@@ -69,7 +66,8 @@ export function DiagnosticFormPanel({
             <DiagnosticStepContent step={currentStep} />
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
+          {
+            !isLandingStep && <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
             <Button
               variant="secondary"
               onClick={goPrevious}
@@ -81,8 +79,7 @@ export function DiagnosticFormPanel({
               Continue
             </Button>
           </div>
-        </>
-      )}
+          }
     </div>
   );
 }

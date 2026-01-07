@@ -17,11 +17,13 @@ import { QuestionFieldRenderer } from "@/features/workflow-diagnostic/components
 type ClarifyingQuestionsFormProps = {
   schema: ClarifyingQuestionsSchema;
   onSubmit: (payload: ClarifyingAnswersPayload) => void;
+  onBack?: () => void;
 };
 
 export function ClarifyingQuestionsForm({
   schema,
   onSubmit,
+  onBack,
 }: ClarifyingQuestionsFormProps) {
   const {
     clarifyingAnswersByRound,
@@ -88,9 +90,18 @@ export function ClarifyingQuestionsForm({
         })}
       </div>
 
-      <Button onClick={handleSubmit} disabled={isSubmitDisabled}>
-        {submitLabel}
-      </Button>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        {onBack ? (
+          <Button variant="secondary" onClick={onBack}>
+            Back
+          </Button>
+        ) : (
+          <span />
+        )}
+        <Button onClick={handleSubmit} disabled={isSubmitDisabled}>
+          {submitLabel}
+        </Button>
+      </div>
     </div>
   );
 }

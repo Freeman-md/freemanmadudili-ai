@@ -114,5 +114,16 @@ export function getMockClarifyingSchema(
     throw new Error(`Missing clarifying schema for ${roundId}`);
   }
 
-  return { ...baseSchema, scope };
+  const hasNextRound = mockClarifyingSchemas.some(
+    (schema) => schema.roundId === "round_2"
+  );
+
+  return {
+    ...baseSchema,
+    scope,
+    submitLabel:
+      roundId === "round_1" && hasNextRound
+        ? "Submit & Continue"
+        : baseSchema.submitLabel,
+  };
 }

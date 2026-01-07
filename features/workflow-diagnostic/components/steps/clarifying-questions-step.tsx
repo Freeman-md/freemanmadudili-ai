@@ -21,6 +21,8 @@ export function ClarifyingQuestionsStep() {
     clarifyingSchemasByRound,
     setClarifyingSchema,
     setActiveClarifyingRound,
+    goToStep,
+    steps,
     goNext,
   } = useDiagnosticFlow();
 
@@ -61,5 +63,18 @@ export function ClarifyingQuestionsStep() {
     goNext();
   };
 
-  return <ClarifyingQuestionsForm schema={schema} onSubmit={handleSubmit} />;
+  const evidenceIndex = steps.findIndex((step) => step.id === "evidence_upload");
+  const handleBack = () => {
+    if (evidenceIndex >= 0) {
+      goToStep(evidenceIndex);
+    }
+  };
+
+  return (
+    <ClarifyingQuestionsForm
+      schema={schema}
+      onSubmit={handleSubmit}
+      onBack={schema.roundId === "round_1" ? handleBack : undefined}
+    />
+  );
 }

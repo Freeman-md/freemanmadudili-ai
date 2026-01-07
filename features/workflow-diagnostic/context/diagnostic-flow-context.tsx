@@ -19,6 +19,7 @@ type DiagnosticFlowState = {
   clarifyingSchemasByRound: Record<string, ClarifyingQuestionsSchema>;
   clarifyingAnswersByRound: Record<string, Record<string, unknown>>;
   activeClarifyingRoundId?: string;
+  clarifyingRoundOrder: string[];
 };
 
 export type DiagnosticFile = {
@@ -52,6 +53,7 @@ type DiagnosticFlowContextValue = {
   clarifyingSchemasByRound: Record<string, ClarifyingQuestionsSchema>;
   clarifyingAnswersByRound: Record<string, Record<string, unknown>>;
   activeClarifyingRoundId?: string;
+  clarifyingRoundOrder: string[];
   goNext: () => void;
   goPrevious: () => void;
   goToStep: (index: number) => void;
@@ -108,12 +110,18 @@ function diagnosticFlowReducer(
       };
     }
     case "SET_CLARIFYING_SCHEMA": {
+      const isExistingRound = state.clarifyingRoundOrder.includes(
+        action.schema.roundId
+      );
       return {
         ...state,
         clarifyingSchemasByRound: {
           ...state.clarifyingSchemasByRound,
           [action.schema.roundId]: action.schema,
         },
+        clarifyingRoundOrder: isExistingRound
+          ? state.clarifyingRoundOrder
+          : [...state.clarifyingRoundOrder, action.schema.roundId],
       };
     }
     case "SET_ACTIVE_CLARIFYING_ROUND": {
@@ -144,6 +152,7 @@ function diagnosticFlowReducer(
           clarifyingSchemasByRound: {},
           clarifyingAnswersByRound: {},
           activeClarifyingRoundId: undefined,
+          clarifyingRoundOrder: [],
         };
       }
 
@@ -151,11 +160,15 @@ function diagnosticFlowReducer(
         state.clarifyingSchemasByRound;
       const { [action.roundId]: __, ...remainingAnswers } =
         state.clarifyingAnswersByRound;
+      const remainingRounds = state.clarifyingRoundOrder.filter(
+        (roundId) => roundId !== action.roundId
+      );
 
       return {
         ...state,
         clarifyingSchemasByRound: remainingSchemas,
         clarifyingAnswersByRound: remainingAnswers,
+        clarifyingRoundOrder: remainingRounds,
         activeClarifyingRoundId:
           state.activeClarifyingRoundId === action.roundId
             ? undefined
@@ -184,6 +197,7 @@ export function DiagnosticFlowProvider({
     clarifyingSchemasByRound: {},
     clarifyingAnswersByRound: {},
     activeClarifyingRoundId: undefined,
+    clarifyingRoundOrder: [],
   });
 
   const value = useMemo<DiagnosticFlowContextValue>(() => {
@@ -202,6 +216,7 @@ export function DiagnosticFlowProvider({
       clarifyingSchemasByRound: state.clarifyingSchemasByRound,
       clarifyingAnswersByRound: state.clarifyingAnswersByRound,
       activeClarifyingRoundId: state.activeClarifyingRoundId,
+      clarifyingRoundOrder: state.clarifyingRoundOrder,
       goNext: () => dispatch({ type: "NEXT" }),
       goPrevious: () => dispatch({ type: "PREVIOUS" }),
       goToStep: (index: number) => dispatch({ type: "GO_TO", index }),

@@ -12,7 +12,7 @@ type InitialProcessingStepProps = {
 };
 
 const timing = {
-  stepDelayMs: 3000,
+  stepDelayMs: 1200,
   advanceDelayMs: 900,
 };
 

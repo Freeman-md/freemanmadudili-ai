@@ -3,7 +3,10 @@
 import { useEffect, useMemo } from "react";
 
 import { ClarifyingQuestionsForm } from "@/features/workflow-diagnostic/components/clarifying-questions/ClarifyingQuestionsForm";
-import { getMockClarifyingSchema } from "@/features/workflow-diagnostic/data/mock-clarifying-schema";
+import {
+  getMockClarifyingSchema,
+  getNextMockRoundId,
+} from "@/features/workflow-diagnostic/data/mock-clarifying-schema";
 import { useDiagnosticFlow } from "@/features/workflow-diagnostic/context/diagnostic-flow-context";
 import type { ClarifyingAnswersPayload } from "@/features/workflow-diagnostic/types/clarifying-schema";
 
@@ -19,6 +22,7 @@ export function ClarifyingQuestionsStep() {
     selectedScope,
     activeClarifyingRoundId,
     clarifyingSchemasByRound,
+    clarifyingRoundOrder,
     setClarifyingSchema,
     setActiveClarifyingRound,
     goToStep,
@@ -53,8 +57,10 @@ export function ClarifyingQuestionsStep() {
   const handleSubmit = (payload: ClarifyingAnswersPayload) => {
     console.log("Clarifying answers payload", payload);
 
-    if (schema.roundId === "round_1") {
-      const nextSchema = getMockClarifyingSchema("round_2", scope);
+    const nextRoundId = getNextMockRoundId(schema.roundId);
+
+    if (nextRoundId) {
+      const nextSchema = getMockClarifyingSchema(nextRoundId, scope);
       setClarifyingSchema(nextSchema);
       setActiveClarifyingRound(nextSchema.roundId);
       return;
@@ -63,18 +69,31 @@ export function ClarifyingQuestionsStep() {
     goNext();
   };
 
+  const currentRoundIndex = clarifyingRoundOrder.indexOf(schema.roundId);
+  const previousRoundId =
+    currentRoundIndex > 0 ? clarifyingRoundOrder[currentRoundIndex - 1] : null;
   const evidenceIndex = steps.findIndex((step) => step.id === "evidence_upload");
+
   const handleBack = () => {
+    if (previousRoundId) {
+      setActiveClarifyingRound(previousRoundId);
+      return;
+    }
+
     if (evidenceIndex >= 0) {
       goToStep(evidenceIndex);
     }
   };
 
+  const submitLabel = getNextMockRoundId(schema.roundId)
+    ? "Submit & Continue"
+    : schema.submitLabel ?? "Submit for deeper analysis";
+
   return (
     <ClarifyingQuestionsForm
-      schema={schema}
+      schema={{ ...schema, submitLabel }}
       onSubmit={handleSubmit}
-      onBack={schema.roundId === "round_1" ? handleBack : undefined}
+      onBack={handleBack}
     />
   );
 }

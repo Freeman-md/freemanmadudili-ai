@@ -98,12 +98,30 @@ export const mockClarifyingSchemas: ClarifyingQuestionsSchema[] = [
     roundId: "round_2",
     scope: "lead_response",
     fields: roundTwoFields,
+  },
+  {
+    schemaVersion: "1.0",
+    roundId: "round_3",
+    scope: "lead_response",
+    fields: roundTwoFields,
     submitLabel: "Submit for deeper analysis",
   },
 ];
 
+export const mockClarifyingRoundOrder = mockClarifyingSchemas.map(
+  (schema) => schema.roundId
+);
+
+export function getNextMockRoundId(currentRoundId: string) {
+  const currentIndex = mockClarifyingRoundOrder.indexOf(currentRoundId);
+  if (currentIndex === -1) {
+    return null;
+  }
+  return mockClarifyingRoundOrder[currentIndex + 1] ?? null;
+}
+
 export function getMockClarifyingSchema(
-  roundId: "round_1" | "round_2",
+  roundId: string,
   scope: ClarifyingQuestionsSchema["scope"]
 ) {
   const baseSchema = mockClarifyingSchemas.find(
@@ -114,16 +132,8 @@ export function getMockClarifyingSchema(
     throw new Error(`Missing clarifying schema for ${roundId}`);
   }
 
-  const hasNextRound = mockClarifyingSchemas.some(
-    (schema) => schema.roundId === "round_2"
-  );
-
   return {
     ...baseSchema,
     scope,
-    submitLabel:
-      roundId === "round_1" && hasNextRound
-        ? "Submit & Continue"
-        : baseSchema.submitLabel,
   };
 }

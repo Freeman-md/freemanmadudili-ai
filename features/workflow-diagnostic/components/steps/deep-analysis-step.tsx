@@ -1,20 +1,16 @@
 "use client";
 
 import { useDiagnosticFlow } from "@/features/workflow-diagnostic/context/diagnostic-flow-context";
-import type { ProcessingStep } from "@/features/workflow-diagnostic/data/processing-steps";
 import { ProcessingFlow } from "@/features/workflow-diagnostic/components/processing-flow";
+import { deepAnalysisSteps } from "@/features/workflow-diagnostic/data/deep-analysis-steps";
 
-type InitialProcessingStepProps = {
-  steps: ProcessingStep[];
-};
-
-export function InitialProcessingStep({ steps }: InitialProcessingStepProps) {
+export function DeepAnalysisStep() {
   const { goNext } = useDiagnosticFlow();
 
   return (
     <ProcessingFlow
-      title="Processing your evidence"
-      steps={steps}
+      title="Deep diagnostic analysis in progress"
+      steps={deepAnalysisSteps}
       supportingText="This may take a moment. You don’t need to do anything."
       onComplete={goNext}
     />

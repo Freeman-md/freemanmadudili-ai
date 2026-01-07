@@ -32,7 +32,7 @@ function MediaCard({ step, activeStep, totalSteps, showDots, className }: MediaC
   return (
     <div
       className={cn(
-        "relative h-full min-h-[320px] overflow-hidden rounded-3xl bg-muted",
+        "relative h-full min-h-80 overflow-hidden bg-muted",
         className
       )}
     >
@@ -132,7 +132,7 @@ export function DiagnosticMediaPanel({
             </AccordionTrigger>
             <AccordionContent className="pb-0 transition-opacity data-[state=closed]:opacity-0 data-[state=open]:opacity-100">
               <MediaCard
-                className="min-h-[260px]"
+                className="min-h-65"
                 step={step}
                 activeStep={activeStep}
                 totalSteps={totalSteps}

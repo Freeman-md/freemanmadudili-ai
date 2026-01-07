@@ -92,7 +92,7 @@ export function DiagnosticMediaPanel({
 
   return (
     <div className={cn("w-full", className)}>
-      <div className="hidden h-full lg:block">
+      <div className="hidden lg:h-full lg:block">
         <MediaCard step={step} activeStep={activeStep} totalSteps={totalSteps} showDots />
       </div>
 
@@ -103,8 +103,11 @@ export function DiagnosticMediaPanel({
           value={openItem}
           onValueChange={setOpenItem}
         >
-          <AccordionItem value="media" className="border border-border rounded-2xl bg-card px-4">
-            <AccordionTrigger className="py-3 text-sm font-semibold text-foreground hover:no-underline">
+          <AccordionItem
+            value="media"
+            className="rounded-none border-b border-border bg-transparent px-0"
+          >
+            <AccordionTrigger className="px-4 py-3 text-sm font-semibold text-foreground hover:no-underline">
               <div className="flex w-full items-center justify-between gap-4">
                 <motion.span
                   key={`accordion-title-${step.id}`}
@@ -127,7 +130,7 @@ export function DiagnosticMediaPanel({
                 ) : null}
               </div>
             </AccordionTrigger>
-            <AccordionContent className="pb-4">
+            <AccordionContent className="pb-0 transition-opacity data-[state=closed]:opacity-0 data-[state=open]:opacity-100">
               <MediaCard
                 className="min-h-[260px]"
                 step={step}

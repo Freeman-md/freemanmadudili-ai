@@ -18,9 +18,9 @@ export function WorkflowDiagnosticPage() {
   } = useDiagnosticSteps(diagnosticSteps);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Container className="p-0!">
-        <div className="grid gap-8 lg:grid-cols-[2fr_3fr] min-h-screen">
+    <div className="min-h-screen bg-white">
+      <Container className="py-8 lg:py-0 px-0!">
+        <div className="grid lg:min-h-screen lg:grid-cols-[2fr_3fr] lg:gap-8">
           <DiagnosticMediaPanel
             className="order-1"
             step={currentStep}

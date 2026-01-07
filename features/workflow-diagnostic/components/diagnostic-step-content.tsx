@@ -2,6 +2,8 @@ import type { DiagnosticStep } from "@/features/workflow-diagnostic/data/steps";
 import { LandingStep } from "./steps/landing-step";
 import { ScopeStep } from "./steps/scope-step";
 import { EvidenceUploadStep } from "./steps/evidence-upload-step";
+import { InitialProcessingStep } from "./steps/initial-processing-step";
+import { processingSteps } from "@/features/workflow-diagnostic/data/processing-steps";
 
 type DiagnosticStepContentProps = {
   step: DiagnosticStep;
@@ -29,6 +31,10 @@ export function DiagnosticStepContent({ step }: DiagnosticStepContentProps) {
 
   if (step.id === "evidence_upload") {
     return <EvidenceUploadStep />;
+  }
+
+  if (step.id === "initial_processing") {
+    return <InitialProcessingStep steps={processingSteps} />;
   }
 
   return <PlaceholderStep title={step.title} />;

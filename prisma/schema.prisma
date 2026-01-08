@@ -5,3 +5,129 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum RunStatus {
+  created
+  evidence_uploaded
+  processing
+  awaiting_clarifying_answers
+  deep_analysis
+  report_ready
+  emailed
+  failed
+}
+
+enum DiagnosticScope {
+  lead_response
+  client_onboarding
+  ops_handoff
+  reporting_visibility
+}
+
+enum ArtifactType {
+  normalized_evidence
+  clarifying_questions
+  clarifying_answers
+  analysis
+  verdict
+  report
+}
+
+enum EvidenceStatus {
+  uploaded
+  parsing
+  parsed
+  failed
+}
+
+enum ClarifyingRoundStatus {
+  pending
+  answered
+  expired
+}
+
+model diagnostic_runs {
+  id           String         @id @default(cuid())
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  scope        DiagnosticScope?
+  status       RunStatus
+  userEmail    String?
+  metadataJson Json?
+
+  evidence_files     evidence_files[]
+  run_artifacts      run_artifacts[]
+  run_events         run_events[]
+  clarifying_rounds  clarifying_rounds[]
+  clarifying_answers clarifying_answers[]
+}
+
+model evidence_files {
+  id             String         @id
+  runId          String
+  filename       String
+  mimeType       String
+  sizeBytes      Int
+  storageKey     String
+  sha256         String?
+  status         EvidenceStatus
+  parsedMetaJson Json?
+  createdAt      DateTime       @default(now())
+
+  run diagnostic_runs @relation(fields: [runId], references: [id])
+
+  @@index([runId])
+}
+
+model run_artifacts {
+  id          String       @id
+  runId       String
+  kind        ArtifactType
+  version     Int
+  payloadJson Json
+  createdAt   DateTime     @default(now())
+
+  run diagnostic_runs @relation(fields: [runId], references: [id])
+
+  @@index([runId])
+}
+
+model run_events {
+  id          String   @id
+  runId       String
+  seq         Int
+  type        String
+  message     String
+  payloadJson Json?
+  createdAt   DateTime @default(now())
+
+  run diagnostic_runs @relation(fields: [runId], references: [id])
+
+  @@index([runId])
+  @@unique([runId, seq])
+}
+
+model clarifying_rounds {
+  id         String               @id
+  runId      String
+  roundId    Int
+  schemaJson Json
+  status     ClarifyingRoundStatus
+  createdAt  DateTime             @default(now())
+
+  run diagnostic_runs @relation(fields: [runId], references: [id])
+
+  @@index([runId])
+}
+
+model clarifying_answers {
+  id          String   @id
+  runId       String
+  roundId     Int
+  answersJson Json
+  createdAt   DateTime @default(now())
+
+  run diagnostic_runs @relation(fields: [runId], references: [id])
+
+  @@index([runId])
+}

@@ -105,3 +105,32 @@ Fetches the current state of a diagnostic run.
   "updatedAt": "ISO-8601"
 }
 ```
+
+---
+
+## Stream Run Events
+
+Streams real-time processing events for a diagnostic run.
+
+### Endpoint
+
+`GET /api/diagnostic/events?runId=uuid`
+
+### Response
+
+Server-Sent Events (SSE)
+
+Each event includes:
+- type
+- message
+- optional payload
+
+Example:
+```json
+{
+  "event": processing
+  "data": {
+    “message”: “Scanning uploaded files”
+  }
+}
+```

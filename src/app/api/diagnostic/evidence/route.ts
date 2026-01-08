@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { addEvidence, updateRunStatus } from "@/lib/diagnostic/store";
-import { RunStatus } from "@/lib/diagnostic/states";
+import { addEvidence, updateRunStatus } from "@/lib/diagnostics/store";
+import { RunStatus } from "@/lib/diagnostics/states";
 
 export async function POST(req: Request) {
   const formData = await req.formData();

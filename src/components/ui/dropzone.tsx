@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import {
   type DiagnosticFile,
   useDiagnosticFlow,
-} from "@/features/workflow-diagnostic/context/diagnostic-flow-context";
+} from "@/features/diagnostic/client/context/diagnostic-flow-context";
 import { useDropzone } from "@/hooks/use-dropzone";
 
 type DropzoneProps = {

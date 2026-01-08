@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo, useState, type DragEvent } from "react";
 
-import type { DiagnosticFile } from "@/features/workflow-diagnostic/context/diagnostic-flow-context";
+import type { DiagnosticFile } from "@/features/diagnostic/client/context/diagnostic-flow-context";
 
 const acceptedExtensions = [
   "png",

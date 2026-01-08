@@ -1,3 +1,4 @@
+import { ArtifactType } from "./artifacts";
 import { RunStatus } from "./states";
 
 export type DiagnosticRun = {
@@ -28,7 +29,7 @@ export type ClarifyingRound = {
 export type DiagnosticArtifact = {
   id: string;
   runId: string;
-  type: "normalized_evidence" | "analysis" | "verdict";
+  type: ArtifactType;
   payload: unknown;
   createdAt: string;
 };

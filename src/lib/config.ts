@@ -25,4 +25,8 @@ if (!parsed.success) {
   throw new Error(`Invalid environment variables: ${issues}`);
 }
 
-export const config = parsed.data;
+export const config = {
+  ...parsed.data,
+  DIRECT_DATABASE_URL:
+    parsed.data.DIRECT_DATABASE_URL ?? parsed.data.DATABASE_URL,
+};

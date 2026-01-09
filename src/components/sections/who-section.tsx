@@ -1,7 +1,7 @@
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { CheckmarkCircle } from "@/components/ui/checkmark-circle";
-import { whoSignals } from "@/lib/data/who-signals";
+import { whoSignals } from "@/lib/constants/who-signals";
 
 export function WhoSection() {
   return (

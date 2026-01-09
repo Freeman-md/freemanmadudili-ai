@@ -9,7 +9,7 @@ import {
   type DiagnosticFile,
   useDiagnosticFlow,
 } from "@/features/diagnostics/client/context/diagnostic-flow-context";
-import { useDropzone } from "@/hooks/use-dropzone";
+import { useDropzone } from "@/features/diagnostics/client/hooks/use-dropzone";
 
 type DropzoneProps = {
   className?: string;

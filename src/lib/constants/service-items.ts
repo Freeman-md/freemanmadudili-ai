@@ -1,13 +1,4 @@
-export type ServiceItem = {
-  title: string;
-  badge: string;
-  description: string;
-  traits: string[];
-  href: string;
-  emphasis?: boolean;
-  metaLine?: string;
-  ctaLabel: string;
-};
+import type { ServiceItem } from "@/lib/types";
 
 export const serviceItems: ServiceItem[] = [
   {

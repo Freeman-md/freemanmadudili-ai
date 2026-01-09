@@ -1,15 +1,4 @@
-export type ProofItem = {
-  id: string;
-  title: string;
-  shortDescription: string;
-  context: string;
-  imageSrc: string;
-  detailedDescription: {
-    problem: string;
-    automated: string;
-    outcome: string;
-  };
-};
+import type { ProofItem } from "@/lib/types";
 
 export const proofItems: ProofItem[] = [
   {

@@ -1,7 +1,4 @@
-export type AutomationFlowStep = {
-  title: string;
-  description: string;
-};
+import type { AutomationFlowStep } from "@/lib/types";
 
 export const automationFlowSteps: AutomationFlowStep[] = [
   {

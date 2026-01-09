@@ -1,5 +1,11 @@
-import { DiagnosticRun, EvidenceFile, DiagnosticArtifact } from "./types";
-import { RunStatus } from "./states";
+import "server-only";
+
+import {
+  DiagnosticArtifact,
+  DiagnosticRun,
+  EvidenceFile,
+  RunStatus,
+} from "@/features/diagnostics/shared/types";
 
 const runs = new Map<string, DiagnosticRun>();
 const evidence = new Map<string, EvidenceFile[]>();

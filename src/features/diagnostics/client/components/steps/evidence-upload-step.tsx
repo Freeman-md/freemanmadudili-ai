@@ -1,6 +1,6 @@
 "use client";
 
-import { Dropzone } from "@/components/ui/dropzone";
+import { Dropzone } from "@/features/diagnostics/client/components/dropzone";
 import { evidenceTypes } from "@/features/diagnostics/client/data/evidence-types";
 
 export function EvidenceUploadStep() {

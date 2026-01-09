@@ -1,5 +1,22 @@
-import { ArtifactType } from "./artifacts";
-import { RunStatus } from "./states";
+export enum RunStatus {
+  CREATED = "created",
+  EVIDENCE_UPLOADED = "evidence_uploaded",
+  PROCESSING = "processing",
+  AWAITING_CLARIFYING_ANSWERS = "awaiting_clarifying_answers",
+  DEEP_ANALYSIS = "deep_analysis",
+  REPORT_READY = "report_ready",
+  EMAILED = "emailed",
+  FAILED = "failed",
+}
+
+export enum ArtifactType {
+  NORMALIZED_EVIDENCE = "normalized_evidence",
+  CLARIFYING_QUESTIONS = "clarifying_questions",
+  CLARIFYING_ANSWERS = "clarifying_answers",
+  ANALYSIS = "analysis",
+  VERDICT = "verdict",
+  REPORT = "report",
+}
 
 export type DiagnosticRun = {
   id: string;

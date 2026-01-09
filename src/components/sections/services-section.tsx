@@ -3,7 +3,8 @@ import { ArrowUpRight, Check } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { serviceItems, type ServiceItem } from "@/lib/data/service-items";
+import { serviceItems } from "@/lib/constants/service-items";
+import type { ServiceItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type ServicePanelProps = ServiceItem;

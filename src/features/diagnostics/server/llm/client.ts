@@ -1,3 +1,5 @@
+import "server-only";
+
 export type LlmClient = unknown;
 
 // Placeholder for LLM client initialization.

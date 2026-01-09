@@ -1,9 +1,4 @@
-export type SystemCapability = {
-  id: string;
-  title: string;
-  description: string;
-  iconKey: "intake" | "logic" | "integration" | "visibility";
-};
+import type { SystemCapability } from "@/lib/types";
 
 export const systemCapabilities: SystemCapability[] = [
   {

@@ -7,7 +7,7 @@ import {
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { systemCapabilities } from "@/lib/constants/system-capabilities";
+import { systemCapabilities } from "@/constants/site";
 import { cn } from "@/lib/utils";
 
 const capabilityIcons = {

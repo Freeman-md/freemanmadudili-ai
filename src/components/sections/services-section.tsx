@@ -3,8 +3,8 @@ import { ArrowUpRight, Check } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { serviceItems } from "@/lib/constants/service-items";
-import type { ServiceItem } from "@/lib/types";
+import { serviceItems } from "@/constants/site";
+import { ServiceItem } from "@/types/site";
 import { cn } from "@/lib/utils";
 
 type ServicePanelProps = ServiceItem;
@@ -81,7 +81,7 @@ export function ServicesSection() {
             SERVICES
           </p>
           <h2 className="mt-4 text-3xl font-semibold text-slate-900 sm:text-4xl">
-           Remove manual work at the right level
+            Remove manual work at the right level
           </h2>
           <p className="mt-3 text-base text-slate-600">
             Start with one process, or fix the system behind it.

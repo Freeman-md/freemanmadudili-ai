@@ -19,8 +19,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { proofItems } from "@/lib/constants/proof-items";
-import type { ProofItem } from "@/lib/types";
+import { proofItems } from "@/constants/site";
+import type { ProofItem } from "@/types/site";
 
 type ProofCardProps = {
   item: ProofItem;

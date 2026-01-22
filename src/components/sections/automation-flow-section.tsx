@@ -7,7 +7,7 @@ import { motion } from "motion/react";
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
 import { buttonVariants } from "@/components/ui/button";
-import { automationFlowSteps } from "@/lib/constants/automation-flow-steps";
+import { automationFlowSteps } from "@/constants/site";
 import { cn } from "@/lib/utils";
 
 const timing = {

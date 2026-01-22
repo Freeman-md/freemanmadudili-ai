@@ -1,27 +1,13 @@
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/server/db/client";
-import { EvidenceStatus, RunStatus } from "@prisma/client";
-
-const MAX_FILE_BYTES = 5 * 1024 * 1024;
-
-type EvidenceConfirmFile = {
-  fileId: string;
-  storageKey: string;
-  filename: string;
-  mimeType: string;
-  sizeBytes: number;
-  sha256: string;
-};
-
-type EvidenceConfirmPayload = {
-  runId: string;
-  files: EvidenceConfirmFile[];
-};
-
-function isValidSha256(value: string) {
-  return /^[a-f0-9]{64}$/i.test(value);
-}
+import type {
+  EvidenceConfirmPayload,
+  EvidenceStatus,
+} from "@/types";
+import { RunStatus } from "@/types";
+import { MAX_EVIDENCE_FILE_BYTES } from "@/features/diagnostics/constants";
+import { isValidSha256 } from "@/features/diagnostics/shared/lib/evidence";
 
 export async function POST(req: Request) {
   const body = (await req.json().catch(() => null)) as EvidenceConfirmPayload | null;
@@ -39,7 +25,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid file size" }, { status: 400 });
     }
 
-    if (file.sizeBytes > MAX_FILE_BYTES) {
+    if (file.sizeBytes > MAX_EVIDENCE_FILE_BYTES) {
       return NextResponse.json(
         { error: "File exceeds 5MB limit" },
         { status: 413 }
@@ -81,6 +67,8 @@ export async function POST(req: Request) {
     );
   }
 
+  const uploadedStatus: EvidenceStatus = "uploaded";
+
   await prisma.$transaction(async (tx) => {
     await tx.evidence_files.createMany({
       data: body.files.map((file) => ({
@@ -91,13 +79,13 @@ export async function POST(req: Request) {
         sizeBytes: file.sizeBytes,
         storageKey: file.storageKey,
         sha256: file.sha256,
-        status: EvidenceStatus.uploaded,
+        status: uploadedStatus,
       })),
     });
 
     await tx.diagnostic_runs.update({
       where: { id: body.runId },
-      data: { status: RunStatus.evidence_uploaded },
+      data: { status: RunStatus.EVIDENCE_UPLOADED },
     });
   });
 

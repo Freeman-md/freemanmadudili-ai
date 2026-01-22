@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { updateRunStatus } from "@/features/diagnostics/server/store";
-import { RunStatus } from "@/features/diagnostics/shared/types";
+import { RunStatus } from "@/types";
 
 export async function POST(req: Request) {
   const { runId } = await req.json();

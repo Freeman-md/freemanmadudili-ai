@@ -1,6 +1,6 @@
+import { WorkflowDiagnosticPage } from "@/features/diagnostics/components/WorkflowDiagnosticPage";
 import type { Metadata } from "next";
 
-import { WorkflowDiagnosticPage } from "@/features/diagnostics/client/components/workflow-diagnostic-page";
 
 export const metadata: Metadata = {
   title: "Free Workflow Diagnostic",

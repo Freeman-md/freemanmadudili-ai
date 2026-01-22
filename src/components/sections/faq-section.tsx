@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { Section } from "@/components/layout/section";
-import { faqItems } from "@/lib/constants/faq-items";
+import { faqItems } from "@/constants/site";
 import { cn } from "@/lib/utils";
 
 type FaqCardProps = {

@@ -1,36 +1,16 @@
+import type {
+  DiagnosticScope as PrismaDiagnosticScope,
+  RunStatus as PrismaRunStatus,
+} from "@prisma/client";
+
+export type DiagnosticScope = PrismaDiagnosticScope;
+export type RunStatus = PrismaRunStatus;
+
 export type ValidationErrors = Record<string, string>;
 
 export type ServiceResult<T> =
   | { ok: true; data: T }
   | { ok: false; status: number; error: string };
-
-export const RunStatus = {
-  CREATED: "created",
-  EVIDENCE_UPLOADED: "evidence_uploaded",
-  PROCESSING: "processing",
-  AWAITING_CLARIFYING_ANSWERS: "awaiting_clarifying_answers",
-  DEEP_ANALYSIS: "deep_analysis",
-  REPORT_READY: "report_ready",
-  EMAILED: "emailed",
-  FAILED: "failed",
-} as const;
-
-export type RunStatus = (typeof RunStatus)[keyof typeof RunStatus];
-
-export enum ArtifactType {
-  NORMALIZED_EVIDENCE = "normalized_evidence",
-  CLARIFYING_QUESTIONS = "clarifying_questions",
-  CLARIFYING_ANSWERS = "clarifying_answers",
-  ANALYSIS = "analysis",
-  VERDICT = "verdict",
-  REPORT = "report",
-}
-
-export type DiagnosticScope =
-  | "lead_response"
-  | "client_onboarding"
-  | "ops_handoff"
-  | "reporting_visibility";
 
 export type DiagnosticFile = {
   id: string;
@@ -45,43 +25,6 @@ export type DecisionOption = {
   intents: string[];
   buttonLabel: string;
   accent?: boolean;
-};
-
-export type EvidenceStatus = "uploaded" | "parsing" | "parsed" | "failed";
-
-export type ClarifyingRoundStatus = "pending" | "answered" | "expired";
-
-export type DiagnosticRun = {
-  id: string;
-  status: RunStatus;
-  scope: DiagnosticScope;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type EvidenceFile = {
-  id: string;
-  runId: string;
-  filename: string;
-  mimeType: string;
-  storageKey: string;
-  uploadedAt: string;
-};
-
-export type ClarifyingRound = {
-  id: string;
-  runId: string;
-  questions: unknown;
-  answers: unknown | null;
-  createdAt: string;
-};
-
-export type DiagnosticArtifact = {
-  id: string;
-  runId: string;
-  type: ArtifactType;
-  payload: unknown;
-  createdAt: string;
 };
 
 export type DiagnosticStep = {
@@ -192,18 +135,6 @@ export type ClarifyingAnswersPayload = {
   };
 };
 
-export type EvidenceInitFile = {
-  filename: string;
-  mimeType: string;
-  sizeBytes: number;
-  sha256: string;
-};
-
-export type EvidenceInitPayload = {
-  runId: string;
-  files: EvidenceInitFile[];
-};
-
 export type EvidenceInitUpload = {
   fileId: string;
   storageKey: string;
@@ -216,31 +147,9 @@ export type EvidenceInitResponse = {
   uploads: EvidenceInitUpload[];
 };
 
-export type EvidenceConfirmFile = {
-  fileId: string;
-  storageKey: string;
-  filename: string;
-  mimeType: string;
-  sizeBytes: number;
-  sha256: string;
-};
-
-export type EvidenceConfirmPayload = {
-  runId: string;
-  files: EvidenceConfirmFile[];
-};
-
-export type RunInitPayload = {
-  scope?: DiagnosticScope | null;
-};
-
 export type RunInitResponse = {
   runId: string;
   status: RunStatus;
-};
-
-export type RunStatusQuery = {
-  runId: string;
 };
 
 export type RunStatusResponse = {

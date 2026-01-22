@@ -1,30 +1,30 @@
 import "server-only";
 
 import type {
-  EvidenceConfirmPayload,
-  EvidenceInitPayload,
   EvidenceInitResponse,
   EvidenceInitUpload,
-  RunInitPayload,
   RunInitResponse,
-  RunStatusQuery,
   RunStatusResponse,
   ServiceResult,
-} from "@/types";
-import { RunStatus } from "@/types";
+} from "@/types/diagnostics";
+import { RunStatus } from "@prisma/client";
 
 import { config } from "@/server/config";
 import {
-  createRun,
+  createRunRecord,
   findExistingEvidenceBySha,
   findRunById,
   findRunStatusById,
   insertEvidenceAndUpdateRun,
 } from "@/server/diagnostics/repo";
 import {
+  EvidenceConfirmPayload,
   EvidenceConfirmPayloadSchema,
+  EvidenceInitPayload,
   EvidenceInitPayloadSchema,
+  RunInitPayload,
   RunInitPayloadSchema,
+  RunStatusQuery,
   RunStatusQuerySchema,
 } from "@/server/diagnostics/schema";
 import {
@@ -52,7 +52,7 @@ export async function initDiagnosticRun(
     return validation;
   }
 
-  const run = await createRun(payload.scope ?? null);
+  const run = await createRunRecord(payload.scope ?? null);
 
   return { ok: true, data: { runId: run.id, status: run.status } };
 }
@@ -91,7 +91,7 @@ export async function confirmEvidenceUpload(
   await insertEvidenceAndUpdateRun(
     payload.runId,
     payload.files,
-    RunStatus.EVIDENCE_UPLOADED
+    RunStatus.evidence_uploaded
   );
 
   return { ok: true, data: { count: payload.files.length } };

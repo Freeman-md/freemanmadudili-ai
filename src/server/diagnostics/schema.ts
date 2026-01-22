@@ -1,13 +1,9 @@
 import "server-only";
 
 import { z } from "zod";
+import { DiagnosticScope } from "@prisma/client";
 
-export const DiagnosticScopeSchema = z.enum([
-  "lead_response",
-  "client_onboarding",
-  "ops_handoff",
-  "reporting_visibility",
-]);
+export const DiagnosticScopeSchema = z.enum(DiagnosticScope);
 
 export const RunInitPayloadSchema = z.object({
   scope: DiagnosticScopeSchema.nullable().optional(),
@@ -43,14 +39,9 @@ export const EvidenceInitPayloadSchema = z.object({
   files: z.array(EvidenceInitFileSchema).min(1),
 });
 
-export type EvidenceConfirmPayloadInput = z.input<
-  typeof EvidenceConfirmPayloadSchema
->;
-
-export type RunInitPayloadInput = z.input<typeof RunInitPayloadSchema>;
-
-export type RunStatusQueryInput = z.input<typeof RunStatusQuerySchema>;
-
-export type EvidenceInitPayloadInput = z.input<
-  typeof EvidenceInitPayloadSchema
->;
+export type EvidenceConfirmPayload = z.infer<typeof EvidenceConfirmPayloadSchema>;
+export type EvidenceConfirmFile = z.infer<typeof EvidenceConfirmFileSchema>;
+export type EvidenceInitPayload = z.infer<typeof EvidenceInitPayloadSchema>;
+export type EvidenceInitFile = z.infer<typeof EvidenceInitFileSchema>;
+export type RunInitPayload = z.infer<typeof RunInitPayloadSchema>;
+export type RunStatusQuery = z.infer<typeof RunStatusQuerySchema>;

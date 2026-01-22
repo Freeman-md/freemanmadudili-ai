@@ -1,13 +1,13 @@
 import "server-only";
 
 import { MAX_EVIDENCE_FILE_BYTES } from "@/features/diagnostics/constants";
+import type { ServiceResult } from "@/types/diagnostics";
 import type {
   EvidenceConfirmPayload,
   EvidenceInitPayload,
   RunInitPayload,
   RunStatusQuery,
-  ServiceResult,
-} from "@/types";
+} from "@/server/diagnostics/schema";
 import { isValidSha256 } from "@/lib/utils";
 
 export function validateEvidenceConfirmPayload(

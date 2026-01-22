@@ -1,15 +1,12 @@
 import "server-only";
 
 import { MAX_EVIDENCE_FILE_BYTES } from "@/features/diagnostics/constants";
-import type { EvidenceConfirmPayload } from "@/types";
-
-export type ValidationResult =
-  | { ok: true }
-  | { ok: false; status: number; error: string };
+import type { EvidenceConfirmPayload, ServiceResult } from "@/types";
+import { isValidSha256 } from "@/lib/utils";
 
 export function validateEvidenceConfirmPayload(
   payload: EvidenceConfirmPayload
-): ValidationResult {
+): ServiceResult<null> {
   if (!payload.runId || !Array.isArray(payload.files) || payload.files.length === 0) {
     return { ok: false, status: 400, error: "Invalid payload" };
   }
@@ -37,9 +34,5 @@ export function validateEvidenceConfirmPayload(
     }
   }
 
-  return { ok: true };
-}
-
-function isValidSha256(value: string) {
-  return /^[a-f0-9]{64}$/i.test(value);
+  return { ok: true, data: null };
 }

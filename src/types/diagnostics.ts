@@ -1,5 +1,9 @@
 export type ValidationErrors = Record<string, string>;
 
+export type ServiceResult<T> =
+  | { ok: true; data: T }
+  | { ok: false; status: number; error: string };
+
 export enum RunStatus {
   CREATED = "created",
   EVIDENCE_UPLOADED = "evidence_uploaded",

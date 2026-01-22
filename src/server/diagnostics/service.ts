@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { EvidenceConfirmPayload } from "@/types";
+import type { EvidenceConfirmPayload, ServiceResult } from "@/types";
 import { RunStatus } from "@/types";
 
 import {
@@ -11,13 +11,9 @@ import {
 import { EvidenceConfirmPayloadSchema } from "@/server/diagnostics/schema";
 import { validateEvidenceConfirmPayload } from "@/server/diagnostics/validation";
 
-export type EvidenceConfirmResult =
-  | { ok: true; count: number }
-  | { ok: false; status: number; error: string };
-
 export async function confirmEvidenceUpload(
   input: unknown
-): Promise<EvidenceConfirmResult> {
+): Promise<ServiceResult<{ count: number }>> {
   const parsed = EvidenceConfirmPayloadSchema.safeParse(input);
 
   if (!parsed.success) {
@@ -51,5 +47,5 @@ export async function confirmEvidenceUpload(
     RunStatus.EVIDENCE_UPLOADED
   );
 
-  return { ok: true, count: payload.files.length };
+  return { ok: true, data: { count: payload.files.length } };
 }

@@ -10,5 +10,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: result.error }, { status: result.status });
   }
 
-  return NextResponse.json({ ok: true, count: result.count });
+  return NextResponse.json({ ok: true, count: result.data.count });
 }

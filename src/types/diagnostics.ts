@@ -4,16 +4,18 @@ export type ServiceResult<T> =
   | { ok: true; data: T }
   | { ok: false; status: number; error: string };
 
-export enum RunStatus {
-  CREATED = "created",
-  EVIDENCE_UPLOADED = "evidence_uploaded",
-  PROCESSING = "processing",
-  AWAITING_CLARIFYING_ANSWERS = "awaiting_clarifying_answers",
-  DEEP_ANALYSIS = "deep_analysis",
-  REPORT_READY = "report_ready",
-  EMAILED = "emailed",
-  FAILED = "failed",
-}
+export const RunStatus = {
+  CREATED: "created",
+  EVIDENCE_UPLOADED: "evidence_uploaded",
+  PROCESSING: "processing",
+  AWAITING_CLARIFYING_ANSWERS: "awaiting_clarifying_answers",
+  DEEP_ANALYSIS: "deep_analysis",
+  REPORT_READY: "report_ready",
+  EMAILED: "emailed",
+  FAILED: "failed",
+} as const;
+
+export type RunStatus = (typeof RunStatus)[keyof typeof RunStatus];
 
 export enum ArtifactType {
   NORMALIZED_EVIDENCE = "normalized_evidence",

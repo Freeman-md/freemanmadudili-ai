@@ -1,19 +1,15 @@
 import { NextResponse } from "next/server";
-import { getRun } from "@/server/diagnostics/repo";
+import { getDiagnosticRunStatus } from "@/server/diagnostics/service";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const runId = searchParams.get("runId");
 
-  if (!runId) {
-    return NextResponse.json({ error: "Missing runId" }, { status: 400 });
+  const result = await getDiagnosticRunStatus({ runId });
+
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error }, { status: result.status });
   }
 
-  const run = getRun(runId);
-
-  if (!run) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
-  }
-
-  return NextResponse.json(run);
+  return NextResponse.json(result.data.run);
 }

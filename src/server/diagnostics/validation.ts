@@ -5,6 +5,7 @@ import type {
   EvidenceConfirmPayload,
   EvidenceInitPayload,
   RunInitPayload,
+  RunStatusQuery,
   ServiceResult,
 } from "@/types";
 import { isValidSha256 } from "@/lib/utils";
@@ -79,6 +80,16 @@ export function validateRunInitPayload(
 
   if (typeof payload.scope !== "string" || payload.scope.length === 0) {
     return { ok: false, status: 400, error: "Invalid payload" };
+  }
+
+  return { ok: true, data: null };
+}
+
+export function validateRunStatusQuery(
+  payload: RunStatusQuery
+): ServiceResult<null> {
+  if (!payload.runId || typeof payload.runId !== "string") {
+    return { ok: false, status: 400, error: "Missing runId" };
   }
 
   return { ok: true, data: null };

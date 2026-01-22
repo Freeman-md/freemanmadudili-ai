@@ -236,3 +236,15 @@ export type RunInitResponse = {
   runId: string;
   status: RunStatus;
 };
+
+export type RunStatusQuery = {
+  runId: string;
+};
+
+export type RunStatusResponse = {
+  id: string;
+  status: RunStatus;
+  scope: DiagnosticScope | null;
+  createdAt: string;
+  updatedAt: string;
+};

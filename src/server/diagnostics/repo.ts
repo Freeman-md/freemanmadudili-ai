@@ -2,7 +2,6 @@ import "server-only";
 
 import {
   DiagnosticRun,
-  DiagnosticScope,
   EvidenceConfirmPayload,
   RunInitPayload,
   RunStatus,
@@ -11,23 +10,7 @@ import { prisma } from "@/server/db";
 
 const runs = new Map<string, DiagnosticRun>();
 
-export function createRun(scope: DiagnosticScope): DiagnosticRun {
-    const id = crypto.randomUUID();
-    const now = new Date().toISOString();
-
-    const run: DiagnosticRun = {
-        id,
-        scope,
-        status: RunStatus.CREATED,
-        createdAt: now,
-        updatedAt: now,
-    };
-
-    runs.set(id, run);
-    return run;
-}
-
-export async function createRunRecord(scope: RunInitPayload["scope"]) {
+export async function createRun(scope: RunInitPayload["scope"]) {
   return prisma.diagnostic_runs.create({
     data: {
       scope,
@@ -57,6 +40,19 @@ export async function findRunById(runId: string) {
   return prisma.diagnostic_runs.findUnique({
     where: { id: runId },
     select: { id: true },
+  });
+}
+
+export async function findRunStatusById(runId: string) {
+  return prisma.diagnostic_runs.findUnique({
+    where: { id: runId },
+    select: {
+      id: true,
+      status: true,
+      scope: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
 }
 

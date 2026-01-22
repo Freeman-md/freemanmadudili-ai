@@ -13,6 +13,10 @@ export const RunInitPayloadSchema = z.object({
   scope: DiagnosticScopeSchema.nullable().optional(),
 });
 
+export const RunStatusQuerySchema = z.object({
+  runId: z.string().min(1),
+});
+
 export const EvidenceConfirmFileSchema = z.object({
   fileId: z.string().min(1),
   storageKey: z.string().min(1),
@@ -44,6 +48,8 @@ export type EvidenceConfirmPayloadInput = z.input<
 >;
 
 export type RunInitPayloadInput = z.input<typeof RunInitPayloadSchema>;
+
+export type RunStatusQueryInput = z.input<typeof RunStatusQuerySchema>;
 
 export type EvidenceInitPayloadInput = z.input<
   typeof EvidenceInitPayloadSchema

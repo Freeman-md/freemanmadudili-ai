@@ -7,26 +7,31 @@ import type {
   EvidenceInitUpload,
   RunInitPayload,
   RunInitResponse,
+  RunStatusQuery,
+  RunStatusResponse,
   ServiceResult,
 } from "@/types";
 import { RunStatus } from "@/types";
 
 import { config } from "@/server/config";
 import {
-  createRunRecord,
+  createRun,
   findExistingEvidenceBySha,
   findRunById,
+  findRunStatusById,
   insertEvidenceAndUpdateRun,
 } from "@/server/diagnostics/repo";
 import {
   EvidenceConfirmPayloadSchema,
   EvidenceInitPayloadSchema,
   RunInitPayloadSchema,
+  RunStatusQuerySchema,
 } from "@/server/diagnostics/schema";
 import {
   validateEvidenceConfirmPayload,
   validateEvidenceInitPayload,
   validateRunInitPayload,
+  validateRunStatusQuery,
 } from "@/server/diagnostics/validation";
 import { createSignedUploadUrl } from "@/server/storage";
 import { SIGNED_UPLOAD_URL_TTL_SECONDS } from "@/features/diagnostics/constants";
@@ -47,7 +52,7 @@ export async function initDiagnosticRun(
     return validation;
   }
 
-  const run = await createRunRecord(payload.scope ?? null);
+  const run = await createRun(payload.scope ?? null);
 
   return { ok: true, data: { runId: run.id, status: run.status } };
 }
@@ -127,4 +132,40 @@ export async function initEvidenceUpload(
   }
 
   return { ok: true, data: { runId: payload.runId, uploads } };
+}
+
+export async function getDiagnosticRunStatus(
+  input: unknown
+): Promise<ServiceResult<{ run: RunStatusResponse }>> {
+  const parsed = RunStatusQuerySchema.safeParse(input);
+
+  if (!parsed.success) {
+    return { ok: false, status: 400, error: "Missing runId" };
+  }
+
+  const payload = parsed.data as RunStatusQuery;
+  const validation = validateRunStatusQuery(payload);
+
+  if (!validation.ok) {
+    return validation;
+  }
+
+  const run = await findRunStatusById(payload.runId);
+
+  if (!run) {
+    return { ok: false, status: 404, error: "Not found" };
+  }
+
+  return {
+    ok: true,
+    data: {
+      run: {
+        id: run.id,
+        status: run.status,
+        scope: run.scope ?? null,
+        createdAt: run.createdAt.toISOString(),
+        updatedAt: run.updatedAt.toISOString(),
+      },
+    },
+  };
 }

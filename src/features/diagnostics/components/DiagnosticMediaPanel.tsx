@@ -12,7 +12,7 @@ import {
 import { cn } from "@/lib/utils";
 import { ProgressDots } from "@/features/diagnostics/components/ProgressDots";
 import { useDiagnosticFlow } from "@/features/diagnostics/context";
-import type { DiagnosticStep } from "@/types";
+import type { DiagnosticStep } from "@/types/diagnostics";
 
 type DiagnosticMediaPanelProps = {
   className?: string;

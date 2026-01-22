@@ -9,7 +9,7 @@ import {
   scopeValueByLabel,
 } from "@/features/diagnostics/constants";
 import { useDiagnosticFlow } from "@/features/diagnostics/context";
-import type { ClarifyingAnswersPayload } from "@/types";
+import type { ClarifyingAnswersPayload } from "@/types/diagnostics";
 
 export function ClarifyingQuestionsStep() {
   const {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useDiagnosticFlow } from "@/features/diagnostics/context";
-import type { ProcessingStep } from "@/types";
+import type { ProcessingStep } from "@/types/diagnostics";
 import { ProcessingFlow } from "@/features/diagnostics/components/ProcessingFlow";
 
 type InitialProcessingStepProps = {

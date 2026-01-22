@@ -1,4 +1,4 @@
-import type { DiagnosticStep } from "@/types";
+import type { DiagnosticStep } from "@/types/diagnostics";
 import { LandingStep } from "./LandingStep";
 import { ScopeStep } from "./ScopeStep";
 import { EvidenceUploadStep } from "./EvidenceUploadStep";

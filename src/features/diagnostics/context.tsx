@@ -13,9 +13,9 @@ import type {
   DiagnosticDecision,
   DiagnosticStep,
   DiagnosticVerdict,
-} from "@/types";
+  DiagnosticFile
+} from "@/types/diagnostics";
 import { defaultVerdict } from "@/features/diagnostics/constants";
-import type { DiagnosticFile } from "@/types";
 
 type DiagnosticFlowState = {
   steps: DiagnosticStep[];

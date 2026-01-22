@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import type { QuestionField } from "@/types";
-import type { DiagnosticFile } from "@/types";
+import type { QuestionField } from "@/types/diagnostics";
+import type { DiagnosticFile } from "@/types/diagnostics";
 
 type QuestionFieldRendererProps = {
   field: QuestionField;

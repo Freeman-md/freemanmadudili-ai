@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { StatusIndicator } from "@/components/ui/status-indicator";
-import type { ProcessingStep } from "@/types";
+import type { ProcessingStep } from "@/types/diagnostics";
 
 type ProcessingFlowProps = {
   title: string;

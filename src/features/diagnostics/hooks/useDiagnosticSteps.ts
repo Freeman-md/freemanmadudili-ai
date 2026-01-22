@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-import type { DiagnosticStep } from "@/types";
+import type { DiagnosticStep } from "@/types/diagnostics";
 
 type StepState = {
   activeStep: number;

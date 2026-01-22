@@ -3,7 +3,7 @@ import type {
   QuestionDependency,
   QuestionField,
   ValidationErrors,
-} from "@/types";
+} from "@/types/diagnostics";
 
 export function isFieldVisible(
   field: QuestionField,

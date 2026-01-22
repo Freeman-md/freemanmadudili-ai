@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo, useState, type DragEvent } from "react";
 
-import type { DiagnosticFile } from "@/types";
+import type { DiagnosticFile } from "@/types/diagnostics";
 import {
   ACCEPTED_EVIDENCE_EXTENSIONS,
   ACCEPTED_EVIDENCE_MIME_TYPES,

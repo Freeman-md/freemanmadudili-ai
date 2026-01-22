@@ -13,7 +13,7 @@ import type {
   DiagnosticStep,
   DiagnosticVerdict,
   ProcessingStep,
-} from "@/types";
+} from "@/types/diagnostics";
 
 export const diagnosticSteps: DiagnosticStep[] = [
   {

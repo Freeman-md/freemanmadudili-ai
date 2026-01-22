@@ -7,7 +7,7 @@ import { useDiagnosticFlow } from "@/features/diagnostics/context";
 import type {
   ClarifyingAnswersPayload,
   ClarifyingQuestionsSchema,
-} from "@/types";
+} from "@/types/diagnostics";
 import { isFieldVisible } from "@/features/diagnostics/utils";
 import {
   validateAnswers,

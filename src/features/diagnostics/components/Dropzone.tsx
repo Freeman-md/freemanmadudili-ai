@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import {
   useDiagnosticFlow,
 } from "@/features/diagnostics/context";
-import type { DiagnosticFile } from "@/types";
+import type { DiagnosticFile } from "@/types/diagnostics";
 import { useDropzone } from "../hooks/useDropzone";
 
 

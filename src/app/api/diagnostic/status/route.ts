@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getRun } from "@/features/diagnostics/server/store";
+import { getRun } from "@/server/diagnostics/repo";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { addEvidence, updateRunStatus } from "@/features/diagnostics/server/store";
+import { addEvidence, updateRunStatus } from "@/server/diagnostics/repo";
 import { RunStatus } from "@/types";
 
 export async function POST(req: Request) {

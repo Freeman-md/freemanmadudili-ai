@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createRun } from "@/features/diagnostics/server/store";
+import { createRun } from "@/server/diagnostics/repo";
 
 export async function POST(req: Request) {
   const body = await req.json();

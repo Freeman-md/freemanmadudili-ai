@@ -16,6 +16,22 @@ export const EvidenceConfirmPayloadSchema = z.object({
   files: z.array(EvidenceConfirmFileSchema).min(1),
 });
 
+export const EvidenceInitFileSchema = z.object({
+  filename: z.string().min(1),
+  mimeType: z.string().min(1),
+  sizeBytes: z.number(),
+  sha256: z.string().min(1),
+});
+
+export const EvidenceInitPayloadSchema = z.object({
+  runId: z.string().min(1),
+  files: z.array(EvidenceInitFileSchema).min(1),
+});
+
 export type EvidenceConfirmPayloadInput = z.input<
   typeof EvidenceConfirmPayloadSchema
+>;
+
+export type EvidenceInitPayloadInput = z.input<
+  typeof EvidenceInitPayloadSchema
 >;

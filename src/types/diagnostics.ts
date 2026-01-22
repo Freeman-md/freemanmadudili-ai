@@ -227,3 +227,12 @@ export type EvidenceConfirmPayload = {
   runId: string;
   files: EvidenceConfirmFile[];
 };
+
+export type RunInitPayload = {
+  scope?: DiagnosticScope | null;
+};
+
+export type RunInitResponse = {
+  runId: string;
+  status: RunStatus;
+};

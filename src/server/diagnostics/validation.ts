@@ -4,6 +4,7 @@ import { MAX_EVIDENCE_FILE_BYTES } from "@/features/diagnostics/constants";
 import type {
   EvidenceConfirmPayload,
   EvidenceInitPayload,
+  RunInitPayload,
   ServiceResult,
 } from "@/types";
 import { isValidSha256 } from "@/lib/utils";
@@ -64,6 +65,20 @@ export function validateEvidenceInitPayload(
     if (!isValidSha256(file.sha256)) {
       return { ok: false, status: 400, error: "Invalid sha256" };
     }
+  }
+
+  return { ok: true, data: null };
+}
+
+export function validateRunInitPayload(
+  payload: RunInitPayload
+): ServiceResult<null> {
+  if (payload.scope === undefined || payload.scope === null) {
+    return { ok: true, data: null };
+  }
+
+  if (typeof payload.scope !== "string" || payload.scope.length === 0) {
+    return { ok: false, status: 400, error: "Invalid payload" };
   }
 
   return { ok: true, data: null };

@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
-import { createRun } from "@/server/diagnostics/repo";
+import { initDiagnosticRun } from "@/server/diagnostics/service";
 
 export async function POST(req: Request) {
-  const body = await req.json();
-  const scope = body.scope ?? null;
+  const body = await req.json().catch(() => null);
+  const result = await initDiagnosticRun(body);
 
-  const run = createRun(scope);
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error }, { status: result.status });
+  }
 
-  return NextResponse.json({
-    runId: run.id,
-    status: run.status,
-  });
+  return NextResponse.json(result.data);
 }

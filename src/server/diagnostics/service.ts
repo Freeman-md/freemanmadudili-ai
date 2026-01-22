@@ -5,12 +5,15 @@ import type {
   EvidenceInitPayload,
   EvidenceInitResponse,
   EvidenceInitUpload,
+  RunInitPayload,
+  RunInitResponse,
   ServiceResult,
 } from "@/types";
 import { RunStatus } from "@/types";
 
 import { config } from "@/server/config";
 import {
+  createRunRecord,
   findExistingEvidenceBySha,
   findRunById,
   insertEvidenceAndUpdateRun,
@@ -18,13 +21,37 @@ import {
 import {
   EvidenceConfirmPayloadSchema,
   EvidenceInitPayloadSchema,
+  RunInitPayloadSchema,
 } from "@/server/diagnostics/schema";
 import {
   validateEvidenceConfirmPayload,
   validateEvidenceInitPayload,
+  validateRunInitPayload,
 } from "@/server/diagnostics/validation";
 import { createSignedUploadUrl } from "@/server/storage";
 import { SIGNED_UPLOAD_URL_TTL_SECONDS } from "@/features/diagnostics/constants";
+
+export async function initDiagnosticRun(
+  input: unknown
+): Promise<ServiceResult<RunInitResponse>> {
+  const parsed = RunInitPayloadSchema.safeParse(input);
+
+  if (!parsed.success) {
+    return { ok: false, status: 400, error: "Invalid payload" };
+  }
+
+  const payload = parsed.data as RunInitPayload;
+  const validation = validateRunInitPayload(payload);
+
+  if (!validation.ok) {
+    return validation;
+  }
+
+  const run = await createRunRecord(payload.scope ?? null);
+
+  return { ok: true, data: { runId: run.id, status: run.status } };
+}
+
 
 export async function confirmEvidenceUpload(
   input: unknown

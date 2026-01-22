@@ -1,5 +1,9 @@
-import { NextResponse } from "next/server";
 import { getDiagnosticRunStatus } from "@/server/diagnostics/service";
+import {
+  errorCodeFromStatus,
+  jsonError,
+  jsonOk,
+} from "@/server/api-response";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -8,8 +12,12 @@ export async function GET(req: Request) {
   const result = await getDiagnosticRunStatus({ runId });
 
   if (!result.ok) {
-    return NextResponse.json({ error: result.error }, { status: result.status });
+    return jsonError(
+      errorCodeFromStatus(result.status),
+      result.error,
+      result.status
+    );
   }
 
-  return NextResponse.json(result.data.run);
+  return jsonOk(result.data.run);
 }

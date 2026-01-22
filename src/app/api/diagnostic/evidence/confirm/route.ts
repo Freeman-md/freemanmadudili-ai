@@ -1,14 +1,21 @@
-import { NextResponse } from "next/server";
-
 import { confirmEvidenceUpload } from "@/server/diagnostics/service";
+import {
+  errorCodeFromStatus,
+  jsonError,
+  jsonOk,
+} from "@/server/api-response";
 
 export async function POST(req: Request) {
   const body = await req.json().catch(() => null);
   const result = await confirmEvidenceUpload(body);
 
   if (!result.ok) {
-    return NextResponse.json({ error: result.error }, { status: result.status });
+    return jsonError(
+      errorCodeFromStatus(result.status),
+      result.error,
+      result.status
+    );
   }
 
-  return NextResponse.json({ ok: true, count: result.data.count });
+  return jsonOk({ count: result.data.count });
 }

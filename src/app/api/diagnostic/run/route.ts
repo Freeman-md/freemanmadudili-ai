@@ -1,13 +1,21 @@
-import { NextResponse } from "next/server";
 import { initDiagnosticRun } from "@/server/diagnostics/service";
+import {
+  errorCodeFromStatus,
+  jsonError,
+  jsonOk,
+} from "@/server/api-response";
 
 export async function POST(req: Request) {
   const body = await req.json().catch(() => null);
   const result = await initDiagnosticRun(body);
 
   if (!result.ok) {
-    return NextResponse.json({ error: result.error }, { status: result.status });
+    return jsonError(
+      errorCodeFromStatus(result.status),
+      result.error,
+      result.status
+    );
   }
 
-  return NextResponse.json(result.data);
+  return jsonOk(result.data);
 }

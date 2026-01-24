@@ -2,10 +2,15 @@
 
 import { motion } from "motion/react";
 
+import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { DiagnosticStepContent } from "@/features/diagnostics/components/DiagnosticStepContent";
 import { useDiagnosticFlow } from "@/features/diagnostics/context";
+import { scopeValueByLabel } from "@/features/diagnostics/constants";
+import type { ApiResponse } from "@/types/api";
+import type { RunInitResponse } from "@/types/diagnostics";
 
 type DiagnosticFormPanelProps = {
   className?: string;
@@ -19,27 +24,58 @@ export function DiagnosticFormPanel({
     activeStep,
     currentStep,
     isFirstStep,
-    isLastStep,
     selectedScope,
     uploadedFiles,
+    setRunId,
     goNext,
     goPrevious,
   } = useDiagnosticFlow();
-  const isLandingStep = currentStep.id === "landing";
-  const isProcessingStep = currentStep.id === "initial_processing";
-  const isDeepAnalysisStep = currentStep.id === "deep_analysis";
-  const isClarifyingStep = currentStep.id === "clarifying_inputs";
-  const isVerdictStep = currentStep.id === "verdict";
-  const isDecisionStep = currentStep.id === "decision";
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const isScopeStep = currentStep.id === "scope";
   const isEvidenceStep = currentStep.id === "evidence_upload";
-  const isContinueDisabled = isEvidenceStep
-    ? uploadedFiles.length === 0
-    : isScopeStep
-      ? !selectedScope
-      : isLastStep;
-  const continueLabel =
-    currentStep.id === "evidence_upload" ? "Analyze Evidence" : "Continue";
+  const isScopeDisabled = !selectedScope || isSubmitting;
+  const isEvidenceDisabled = uploadedFiles.length === 0 || isSubmitting;
+  const handleScopeContinue = async () => {
+    if (!isScopeStep) {
+      return;
+    }
+
+    const scope = selectedScope ? scopeValueByLabel[selectedScope] : undefined;
+
+    if (!scope) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/diagnostic/run", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ scope }),
+      });
+      const payload = (await response.json()) as ApiResponse<RunInitResponse>;
+
+      if (!payload.ok) {
+        console.error(payload.error.message);
+        return;
+      }
+
+      setRunId(payload.data.runId);
+      goNext();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  const handleEvidenceContinue = () => {
+    if (!isEvidenceStep) {
+      return;
+    }
+
+    goNext();
+  };
 
   return (
     <div className={cn("rounded-3xl bg-card p-8 place-content-center", className)}>
@@ -81,25 +117,35 @@ export function DiagnosticFormPanel({
         <DiagnosticStepContent step={currentStep} />
       </div>
 
-      {!isLandingStep &&
-        !isProcessingStep &&
-        !isDeepAnalysisStep &&
-        !isClarifyingStep &&
-        !isVerdictStep &&
-        !isDecisionStep && (
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
-            <Button
-              variant="secondary"
-              onClick={goPrevious}
-              disabled={isFirstStep}
-            >
-              Back
-            </Button>
-            <Button onClick={goNext} disabled={isContinueDisabled}>
-              {continueLabel}
-            </Button>
-          </div>
-        )}
+      {isScopeStep && (
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
+          <Button
+            variant="secondary"
+            onClick={goPrevious}
+            disabled={isFirstStep || isSubmitting}
+          >
+            Back
+          </Button>
+          <Button onClick={handleScopeContinue} disabled={isScopeDisabled}>
+            Continue
+          </Button>
+        </div>
+      )}
+
+      {isEvidenceStep && (
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
+          <Button
+            variant="secondary"
+            onClick={goPrevious}
+            disabled={isFirstStep || isSubmitting}
+          >
+            Back
+          </Button>
+          <Button onClick={handleEvidenceContinue} disabled={isEvidenceDisabled}>
+            Analyze Evidence
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

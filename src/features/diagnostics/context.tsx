@@ -21,6 +21,7 @@ type DiagnosticFlowState = {
   steps: DiagnosticStep[];
   activeStep: number;
   selectedScope: string | null;
+  runId: string | null;
   uploadedFiles: DiagnosticFile[];
   clarifyingSchemasByRound: Record<string, ClarifyingQuestionsSchema>;
   clarifyingAnswersByRound: Record<string, Record<string, unknown>>;
@@ -35,6 +36,7 @@ type DiagnosticFlowAction =
   | { type: "PREVIOUS" }
   | { type: "GO_TO"; index: number }
   | { type: "SET_SCOPE"; scope: string }
+  | { type: "SET_RUN_ID"; runId: string | null }
   | { type: "ADD_FILES"; files: DiagnosticFile[] }
   | { type: "REMOVE_FILE"; id: string }
   | { type: "SET_CLARIFYING_SCHEMA"; schema: ClarifyingQuestionsSchema }
@@ -53,6 +55,7 @@ type DiagnosticFlowContextValue = {
   isFirstStep: boolean;
   isLastStep: boolean;
   selectedScope: string | null;
+  runId: string | null;
   uploadedFiles: DiagnosticFile[];
   clarifyingSchemasByRound: Record<string, ClarifyingQuestionsSchema>;
   clarifyingAnswersByRound: Record<string, Record<string, unknown>>;
@@ -64,6 +67,7 @@ type DiagnosticFlowContextValue = {
   goPrevious: () => void;
   goToStep: (index: number) => void;
   setScope: (scope: string) => void;
+  setRunId: (runId: string | null) => void;
   addFiles: (files: DiagnosticFile[]) => void;
   removeFile: (id: string) => void;
   setClarifyingSchema: (schema: ClarifyingQuestionsSchema) => void;
@@ -105,6 +109,9 @@ function diagnosticFlowReducer(
     }
     case "SET_SCOPE": {
       return { ...state, selectedScope: action.scope };
+    }
+    case "SET_RUN_ID": {
+      return { ...state, runId: action.runId };
     }
     case "ADD_FILES": {
       return {
@@ -195,6 +202,7 @@ function diagnosticFlowReducer(
         ...state,
         activeStep: 0,
         selectedScope: null,
+        runId: null,
         uploadedFiles: [],
         clarifyingSchemasByRound: {},
         clarifyingAnswersByRound: {},
@@ -222,6 +230,7 @@ export function DiagnosticFlowProvider({
     steps,
     activeStep: 0,
     selectedScope: null,
+    runId: null,
     uploadedFiles: [],
     clarifyingSchemasByRound: {},
     clarifyingAnswersByRound: {},
@@ -243,6 +252,7 @@ export function DiagnosticFlowProvider({
       isFirstStep: state.activeStep === 0,
       isLastStep: state.activeStep === totalSteps - 1,
       selectedScope: state.selectedScope,
+      runId: state.runId,
       uploadedFiles: state.uploadedFiles,
       clarifyingSchemasByRound: state.clarifyingSchemasByRound,
       clarifyingAnswersByRound: state.clarifyingAnswersByRound,
@@ -254,6 +264,7 @@ export function DiagnosticFlowProvider({
       goPrevious: () => dispatch({ type: "PREVIOUS" }),
       goToStep: (index: number) => dispatch({ type: "GO_TO", index }),
       setScope: (scope: string) => dispatch({ type: "SET_SCOPE", scope }),
+      setRunId: (runId: string | null) => dispatch({ type: "SET_RUN_ID", runId }),
       addFiles: (files: DiagnosticFile[]) => dispatch({ type: "ADD_FILES", files }),
       removeFile: (id: string) => dispatch({ type: "REMOVE_FILE", id }),
       setClarifyingSchema: (schema: ClarifyingQuestionsSchema) =>

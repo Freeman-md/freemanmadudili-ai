@@ -1,6 +1,6 @@
 import "server-only";
 
-import { supabase } from "@/lib/server/supabase";
+import { supabase } from "@/server/supabase";
 
 export type SignedUpload = {
   signedUrl: string;

@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { DiagnosticStepContent } from "@/features/diagnostics/components/DiagnosticStepContent";
 import { useDiagnosticFlow } from "@/features/diagnostics/context";
-import { useDiagnosticActions } from "@/features/diagnostics/hooks/useDiagnosticActions";
 
 type DiagnosticFormPanelProps = {
   className?: string;
@@ -19,18 +18,17 @@ export function DiagnosticFormPanel({
     steps,
     activeStep,
     currentStep,
-  } = useDiagnosticFlow();
-  const {
-    isScopeStep,
-    isEvidenceStep,
-    isScopeDisabled,
-    isEvidenceDisabled,
-    isSubmitting,
     isFirstStep,
-    handleScopeContinue,
-    handleEvidenceContinue,
+    selectedScope,
+    uploadedFiles,
+    goNext,
     goPrevious,
-  } = useDiagnosticActions();
+  } = useDiagnosticFlow();
+
+  const isScopeStep = currentStep.id === "scope";
+  const isEvidenceStep = currentStep.id === "evidence_upload";
+  const isScopeDisabled = !selectedScope;
+  const isEvidenceDisabled = uploadedFiles.length === 0;
 
   return (
     <div className={cn("rounded-3xl bg-card p-8 place-content-center", className)}>
@@ -77,11 +75,11 @@ export function DiagnosticFormPanel({
           <Button
             variant="secondary"
             onClick={goPrevious}
-            disabled={isFirstStep || isSubmitting}
+            disabled={isFirstStep}
           >
             Back
           </Button>
-          <Button onClick={handleScopeContinue} disabled={isScopeDisabled}>
+          <Button onClick={goNext} disabled={isScopeDisabled}>
             Continue
           </Button>
         </div>
@@ -92,11 +90,11 @@ export function DiagnosticFormPanel({
           <Button
             variant="secondary"
             onClick={goPrevious}
-            disabled={isFirstStep || isSubmitting}
+            disabled={isFirstStep}
           >
             Back
           </Button>
-          <Button onClick={handleEvidenceContinue} disabled={isEvidenceDisabled}>
+          <Button onClick={goNext} disabled={isEvidenceDisabled}>
             Analyze Evidence
           </Button>
         </div>

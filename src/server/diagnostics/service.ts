@@ -22,6 +22,8 @@ import {
   EvidenceConfirmPayloadSchema,
   EvidenceInitPayload,
   EvidenceInitPayloadSchema,
+  ProcessEvidencePayload,
+  ProcessEvidencePayloadSchema,
   RunInitPayload,
   RunInitPayloadSchema,
   RunStatusQuery,
@@ -30,6 +32,7 @@ import {
 import {
   validateEvidenceConfirmPayload,
   validateEvidenceInitPayload,
+  validateProcessEvidencePayload,
   validateRunInitPayload,
   validateRunStatusQuery,
 } from "@/server/diagnostics/validation";
@@ -168,4 +171,23 @@ export async function getDiagnosticRunStatus(
       },
     },
   };
+}
+
+export async function processDiagnosticEvidence(
+  input: unknown
+): Promise<ServiceResult<{ status: "received" }>> {
+  const parsed = ProcessEvidencePayloadSchema.safeParse(input);
+
+  if (!parsed.success) {
+    return { ok: false, status: 400, error: "Invalid payload" };
+  }
+
+  const payload = parsed.data as ProcessEvidencePayload;
+  const validation = validateProcessEvidencePayload(payload);
+
+  if (!validation.ok) {
+    return validation;
+  }
+
+  return { ok: true, data: { status: "received" } };
 }

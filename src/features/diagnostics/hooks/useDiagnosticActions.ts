@@ -42,7 +42,7 @@ export function useDiagnosticActions() {
     setIsSubmitting(true);
 
     try {
-      await fetch("/api/diagnostic/process", {
+      const result = await fetch("/api/diagnostic/process", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -55,6 +55,8 @@ export function useDiagnosticActions() {
           })),
         }),
       });
+
+      console.log(await result.json())
     } catch (error) {
       console.error(error);
       return;

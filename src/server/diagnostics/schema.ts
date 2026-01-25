@@ -39,9 +39,23 @@ export const EvidenceInitPayloadSchema = z.object({
   files: z.array(EvidenceInitFileSchema).min(1),
 });
 
+export const ProcessEvidenceFileSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  mimeType: z.string().min(1),
+  sizeBytes: z.number(),
+});
+
+export const ProcessEvidencePayloadSchema = z.object({
+  scope: DiagnosticScopeSchema,
+  files: z.array(ProcessEvidenceFileSchema).min(1),
+});
+
 export type EvidenceConfirmPayload = z.infer<typeof EvidenceConfirmPayloadSchema>;
 export type EvidenceConfirmFile = z.infer<typeof EvidenceConfirmFileSchema>;
 export type EvidenceInitPayload = z.infer<typeof EvidenceInitPayloadSchema>;
 export type EvidenceInitFile = z.infer<typeof EvidenceInitFileSchema>;
+export type ProcessEvidencePayload = z.infer<typeof ProcessEvidencePayloadSchema>;
+export type ProcessEvidenceFile = z.infer<typeof ProcessEvidenceFileSchema>;
 export type RunInitPayload = z.infer<typeof RunInitPayloadSchema>;
 export type RunStatusQuery = z.infer<typeof RunStatusQuerySchema>;

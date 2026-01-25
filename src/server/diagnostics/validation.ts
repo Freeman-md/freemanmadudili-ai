@@ -5,6 +5,7 @@ import type { ServiceResult } from "@/types/diagnostics";
 import type {
   EvidenceConfirmPayload,
   EvidenceInitPayload,
+  ProcessEvidencePayload,
   RunInitPayload,
   RunStatusQuery,
 } from "@/server/diagnostics/schema";
@@ -90,6 +91,26 @@ export function validateRunStatusQuery(
 ): ServiceResult<null> {
   if (!payload.runId || typeof payload.runId !== "string") {
     return { ok: false, status: 400, error: "Missing runId" };
+  }
+
+  return { ok: true, data: null };
+}
+
+export function validateProcessEvidencePayload(
+  payload: ProcessEvidencePayload
+): ServiceResult<null> {
+  if (!payload.scope || !Array.isArray(payload.files) || payload.files.length === 0) {
+    return { ok: false, status: 400, error: "Invalid payload" };
+  }
+
+  for (const file of payload.files) {
+    if (!file.id || !file.name || !file.mimeType) {
+      return { ok: false, status: 400, error: "Missing file metadata" };
+    }
+
+    if (!Number.isFinite(file.sizeBytes) || file.sizeBytes <= 0) {
+      return { ok: false, status: 400, error: "Invalid file size" };
+    }
   }
 
   return { ok: true, data: null };

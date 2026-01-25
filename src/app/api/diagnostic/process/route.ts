@@ -1,11 +1,17 @@
-import { updateRunStatus } from "@/server/diagnostics/repo";
-import { RunStatus } from "@prisma/client";
-import { jsonOk } from "@/server/api-response";
+import { errorCodeFromStatus, jsonError, jsonOk } from "@/server/api-response";
+import { processDiagnosticEvidence } from "@/server/diagnostics/service";
 
 export async function POST(req: Request) {
-  const { runId } = await req.json();
+  const payload = await req.json().catch(() => null);
+  const result = await processDiagnosticEvidence(payload);
 
-  await updateRunStatus(runId, RunStatus.processing);
+  if (!result.ok) {
+    return jsonError(
+      errorCodeFromStatus(result.status),
+      result.error,
+      result.status
+    );
+  }
 
-  return jsonOk({ status: "processing_started" });
+  return jsonOk(result.data);
 }

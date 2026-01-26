@@ -2,6 +2,14 @@ import type {
   DiagnosticScope as PrismaDiagnosticScope,
   RunStatus as PrismaRunStatus,
 } from "@prisma/client";
+import type {
+  ClarifyingQuestionsSchema,
+  QuestionDependency,
+  QuestionField,
+  QuestionInputType,
+  QuestionOption,
+  QuestionValidation,
+} from "@/features/diagnostics/schema";
 
 export type DiagnosticScope = PrismaDiagnosticScope;
 export type RunStatus = PrismaRunStatus;
@@ -59,70 +67,13 @@ export type DiagnosticDecision = {
   selectedAt?: string;
 };
 
-export type QuestionInputType =
-  | "single_select"
-  | "multi_select"
-  | "boolean"
-  | "number"
-  | "text"
-  | "textarea"
-  | "date"
-  | "time"
-  | "datetime"
-  | "email"
-  | "url"
-  | "phone"
-  | "file_ref"
-  | "rating"
-  | "currency";
-
-export type QuestionOption = {
-  label: string;
-  value: string;
-  description?: string;
-};
-
-export type QuestionValidation = {
-  required?: boolean;
-  min?: number;
-  max?: number;
-  minLength?: number;
-  maxLength?: number;
-  pattern?: string;
-};
-
-export type QuestionDependency = {
-  dependsOnKey: string;
-  operator: "eq" | "neq" | "in" | "not_in" | "gt" | "gte" | "lt" | "lte";
-  value: unknown;
-};
-
-export type QuestionField = {
-  key: string;
-  label: string;
-  helpText?: string;
-  placeholder?: string;
-  inputType: QuestionInputType;
-  options?: QuestionOption[];
-  defaultValue?: unknown;
-  validation?: QuestionValidation;
-  ui?: {
-    layout?: "stack" | "inline";
-    width?: "full" | "half";
-  };
-  dependency?: QuestionDependency;
-  fileRef?: {
-    allow: "any" | "csv" | "image" | "pdf" | "email";
-    maxSelections?: number;
-  };
-};
-
-export type ClarifyingQuestionsSchema = {
-  schemaVersion: "1.0";
-  roundId: string;
-  scope: DiagnosticScope;
-  fields: QuestionField[];
-  submitLabel?: string;
+export type {
+  QuestionInputType,
+  QuestionOption,
+  QuestionValidation,
+  QuestionDependency,
+  QuestionField,
+  ClarifyingQuestionsSchema,
 };
 
 export type ClarifyingAnswersPayload = {
@@ -133,6 +84,14 @@ export type ClarifyingAnswersPayload = {
     evidenceFileIds?: string[];
     timezone?: string;
   };
+};
+
+export type ProcessEvidenceDecision = "reject" | "clarify" | "proceed";
+
+export type ProcessEvidenceResponse = {
+  decision: ProcessEvidenceDecision;
+  reason?: string;
+  clarifyingSchema?: ClarifyingQuestionsSchema;
 };
 
 export type EvidenceInitUpload = {

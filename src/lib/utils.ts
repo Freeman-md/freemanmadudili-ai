@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import type { TextItem } from "pdfjs-dist/types/src/display/api";
+import * as XLSX from "xlsx";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -36,4 +37,14 @@ export async function extractPdfText(buffer: Buffer) {
 
   await doc.destroy();
   return pageTexts.join("\n").trim();
+}
+
+export function extractSpreadsheetText(buffer: Buffer) {
+  const workbook = XLSX.read(buffer, { type: "buffer" });
+  const sheetName = workbook.SheetNames[0];
+  if (!sheetName) {
+    return "";
+  }
+  const sheet = workbook.Sheets[sheetName];
+  return XLSX.utils.sheet_to_csv(sheet);
 }

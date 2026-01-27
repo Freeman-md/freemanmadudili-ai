@@ -1,6 +1,6 @@
 import "server-only";
 
-import { extractPdfText } from "@/lib/utils";
+import { extractPdfText, extractSpreadsheetText } from "@/lib/utils";
 
 import type {
   ProcessEvidenceInput,
@@ -51,6 +51,20 @@ export async function extractEvidenceText(
 
     if (file.mimeType === "text/csv" || file.name.endsWith(".csv")) {
       chunks.push(file.buffer.toString("utf-8"));
+      continue;
+    }
+
+    if (
+      file.mimeType === "application/vnd.ms-excel" ||
+      file.mimeType ===
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+      file.name.endsWith(".xls") ||
+      file.name.endsWith(".xlsx")
+    ) {
+      const csv = extractSpreadsheetText(file.buffer);
+      if (csv) {
+        chunks.push(csv);
+      }
       continue;
     }
   }

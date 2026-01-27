@@ -206,7 +206,5 @@ export async function processDiagnosticEvidence(
 
   const text = await extractEvidenceText(payload.files);
 
-  console.log(text)
-
   return { ok: true, data: { text } };
 }

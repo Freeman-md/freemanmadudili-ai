@@ -4,12 +4,11 @@ import type {
   EvidenceInitResponse,
   EvidenceInitUpload,
   ExtractEvidenceResponse,
-  ProcessEvidenceResponse,
   RunInitResponse,
   RunStatusResponse,
   ServiceResult,
 } from "@/types/diagnostics";
-import { RunStatus } from "@prisma/client";
+import { DiagnosticScope, RunStatus } from "@prisma/client";
 
 import { config } from "@/server/config";
 import {
@@ -24,9 +23,6 @@ import {
   EvidenceConfirmPayloadSchema,
   EvidenceInitPayload,
   EvidenceInitPayloadSchema,
-  ProcessEvidenceInput,
-  ProcessEvidencePayload,
-  ProcessEvidencePayloadSchema,
   RunInitPayload,
   RunInitPayloadSchema,
   RunStatusQuery,
@@ -35,13 +31,14 @@ import {
 import {
   validateEvidenceConfirmPayload,
   validateEvidenceInitPayload,
-  validateProcessEvidencePayload,
+  validateProcessEvidenceRequest,
   validateRunInitPayload,
   validateRunStatusQuery,
 } from "@/server/diagnostics/validation";
 import { createSignedUploadUrl } from "@/server/storage";
 import { SIGNED_UPLOAD_URL_TTL_SECONDS } from "@/features/diagnostics/constants";
 import { extractDataFromFiles } from "@/server/diagnostics/ai";
+import { buildProcessEvidenceInput } from "@/server/diagnostics/parsers";
 
 export async function initDiagnosticRun(
   input: unknown
@@ -180,41 +177,35 @@ export async function getDiagnosticRunStatus(
 export async function processDiagnosticEvidence(
   input: unknown
 ): Promise<ServiceResult<ExtractEvidenceResponse>> {
-  const incoming = input as ProcessEvidenceInput;
-  const parsed = ProcessEvidencePayloadSchema.safeParse({
-    scope: incoming?.scope,
-    files: incoming?.files?.map((file) => ({
-      id: file.id,
-      name: file.name,
-      mimeType: file.mimeType,
-      sizeBytes: file.sizeBytes,
-    })),
-  });
-
-  if (!parsed.success) {
+  if (!input || !(input instanceof FormData)) {
     return { ok: false, status: 400, error: "Invalid payload" };
   }
 
-  const payload = parsed.data as ProcessEvidencePayload;
-  const validation = validateProcessEvidencePayload(payload);
+  const scope = input.get("scope");
+  const metadataRaw = input.get("metadata");
+  const files = input.getAll("files").filter((item): item is File => item instanceof File);
+
+  const validation = validateProcessEvidenceRequest({
+    scope,
+    metadataRaw,
+    files,
+  });
 
   if (!validation.ok) {
     return validation;
   }
 
-  if (!incoming?.files?.length) {
+  const payload = await buildProcessEvidenceInput({
+    scope: validation.data.scope as DiagnosticScope,
+    metadata: validation.data.metadata,
+    files,
+  });
+
+  if (!payload.files.length) {
     return { ok: false, status: 400, error: "Missing file contents" };
   }
 
-  const missingBuffer = incoming.files.some((file) => !file.buffer);
-
-  if (missingBuffer) {
-    return { ok: false, status: 400, error: "Missing file contents" };
-  }
-
-  const extraction = await extractDataFromFiles(incoming);
-
-  console.log(extraction)
+  const extraction = await extractDataFromFiles(payload);
 
   return { ok: true, data: { text: extraction.text } };
 }

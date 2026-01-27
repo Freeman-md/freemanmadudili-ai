@@ -28,3 +28,19 @@ export async function buildProcessEvidenceInput({
     ),
   };
 }
+
+export function buildEvidenceExtractionContent(input: ProcessEvidenceInput) {
+  const files = input.files.map((file) => ({
+    type: "file" as const,
+    data: file.buffer,
+    mimeType: file.mimeType,
+  }));
+
+  return [
+    {
+      type: "text" as const,
+      text: `Scope: ${input.scope}.\nExtract text from the attached files.`,
+    },
+    ...files,
+  ];
+}

@@ -3,6 +3,8 @@ import "server-only";
 import type {
   EvidenceInitResponse,
   EvidenceInitUpload,
+  ExtractEvidenceResponse,
+  ProcessEvidenceResponse,
   RunInitResponse,
   RunStatusResponse,
   ServiceResult,
@@ -22,6 +24,7 @@ import {
   EvidenceConfirmPayloadSchema,
   EvidenceInitPayload,
   EvidenceInitPayloadSchema,
+  ProcessEvidenceInput,
   ProcessEvidencePayload,
   ProcessEvidencePayloadSchema,
   RunInitPayload,
@@ -38,6 +41,7 @@ import {
 } from "@/server/diagnostics/validation";
 import { createSignedUploadUrl } from "@/server/storage";
 import { SIGNED_UPLOAD_URL_TTL_SECONDS } from "@/features/diagnostics/constants";
+import { extractDataFromFiles } from "@/server/diagnostics/ai";
 
 export async function initDiagnosticRun(
   input: unknown
@@ -175,8 +179,17 @@ export async function getDiagnosticRunStatus(
 
 export async function processDiagnosticEvidence(
   input: unknown
-): Promise<ServiceResult<{ status: "received" }>> {
-  const parsed = ProcessEvidencePayloadSchema.safeParse(input);
+): Promise<ServiceResult<ExtractEvidenceResponse>> {
+  const incoming = input as ProcessEvidenceInput;
+  const parsed = ProcessEvidencePayloadSchema.safeParse({
+    scope: incoming?.scope,
+    files: incoming?.files?.map((file) => ({
+      id: file.id,
+      name: file.name,
+      mimeType: file.mimeType,
+      sizeBytes: file.sizeBytes,
+    })),
+  });
 
   if (!parsed.success) {
     return { ok: false, status: 400, error: "Invalid payload" };
@@ -189,5 +202,19 @@ export async function processDiagnosticEvidence(
     return validation;
   }
 
-  return { ok: true, data: { status: "received" } };
+  if (!incoming?.files?.length) {
+    return { ok: false, status: 400, error: "Missing file contents" };
+  }
+
+  const missingBuffer = incoming.files.some((file) => !file.buffer);
+
+  if (missingBuffer) {
+    return { ok: false, status: 400, error: "Missing file contents" };
+  }
+
+  const extraction = await extractDataFromFiles(incoming);
+
+  console.log(extraction)
+
+  return { ok: true, data: { text: extraction.text } };
 }

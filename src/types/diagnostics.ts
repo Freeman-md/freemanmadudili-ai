@@ -86,6 +86,10 @@ export type ClarifyingAnswersPayload = {
   };
 };
 
+export type ExtractEvidenceResponse = {
+  text: string;
+};
+
 export type ProcessEvidenceDecision = "reject" | "clarify" | "proceed";
 
 export type ProcessEvidenceResponse = {

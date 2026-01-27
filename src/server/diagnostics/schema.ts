@@ -51,11 +51,28 @@ export const ProcessEvidencePayloadSchema = z.object({
   files: z.array(ProcessEvidenceFileSchema).min(1),
 });
 
+export const ProcessEvidenceMetadataSchema = z.array(ProcessEvidenceFileSchema).min(1);
+
+export const ProcessEvidenceExtractionSchema = z.object({
+  text: z.string(),
+});
+
 export type EvidenceConfirmPayload = z.infer<typeof EvidenceConfirmPayloadSchema>;
 export type EvidenceConfirmFile = z.infer<typeof EvidenceConfirmFileSchema>;
 export type EvidenceInitPayload = z.infer<typeof EvidenceInitPayloadSchema>;
 export type EvidenceInitFile = z.infer<typeof EvidenceInitFileSchema>;
 export type ProcessEvidencePayload = z.infer<typeof ProcessEvidencePayloadSchema>;
 export type ProcessEvidenceFile = z.infer<typeof ProcessEvidenceFileSchema>;
+export type ProcessEvidenceMetadata = z.infer<typeof ProcessEvidenceMetadataSchema>;
+export type ProcessEvidenceExtraction = z.infer<typeof ProcessEvidenceExtractionSchema>;
 export type RunInitPayload = z.infer<typeof RunInitPayloadSchema>;
 export type RunStatusQuery = z.infer<typeof RunStatusQuerySchema>;
+
+export type ProcessEvidenceFileWithBuffer = ProcessEvidenceFile & {
+  buffer: Buffer;
+};
+
+export type ProcessEvidenceInput = {
+  scope: DiagnosticScope;
+  files: ProcessEvidenceFileWithBuffer[];
+};

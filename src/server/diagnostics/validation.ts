@@ -5,10 +5,12 @@ import type { ServiceResult } from "@/types/diagnostics";
 import type {
   EvidenceConfirmPayload,
   EvidenceInitPayload,
+  ProcessEvidenceMetadata,
   ProcessEvidencePayload,
   RunInitPayload,
   RunStatusQuery,
 } from "@/server/diagnostics/schema";
+import { ProcessEvidenceMetadataSchema } from "@/server/diagnostics/schema";
 import { isValidSha256 } from "@/lib/utils";
 
 export function validateEvidenceConfirmPayload(
@@ -114,4 +116,42 @@ export function validateProcessEvidencePayload(
   }
 
   return { ok: true, data: null };
+}
+
+export function validateProcessEvidenceRequest({
+  scope,
+  metadataRaw,
+  files,
+}: {
+  scope: unknown;
+  metadataRaw: unknown;
+  files: File[];
+}): ServiceResult<{ scope: string; metadata: ProcessEvidenceMetadata }> {
+  if (typeof scope !== "string" || typeof metadataRaw !== "string") {
+    return { ok: false, status: 400, error: "Missing payload fields" };
+  }
+
+  let metadata: ProcessEvidenceMetadata;
+
+  try {
+    metadata = JSON.parse(metadataRaw) as ProcessEvidenceMetadata;
+  } catch {
+    return { ok: false, status: 400, error: "Invalid metadata" };
+  }
+
+  const parsedMetadata = ProcessEvidenceMetadataSchema.safeParse(metadata);
+
+  if (!parsedMetadata.success) {
+    return { ok: false, status: 400, error: "Invalid metadata" };
+  }
+
+  if (files.length === 0) {
+    return { ok: false, status: 400, error: "No files received" };
+  }
+
+  if (parsedMetadata.data.length !== files.length) {
+    return { ok: false, status: 400, error: "Metadata mismatch" };
+  }
+
+  return { ok: true, data: { scope, metadata: parsedMetadata.data } };
 }

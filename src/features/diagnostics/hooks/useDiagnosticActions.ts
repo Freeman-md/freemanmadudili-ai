@@ -42,21 +42,28 @@ export function useDiagnosticActions() {
     setIsSubmitting(true);
 
     try {
-      const result = await fetch("/api/diagnostic/process", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          scope,
-          files: uploadedFiles.map((file) => ({
-            id: file.id,
-            name: file.file?.name ?? file.name,
-            mimeType: file.file?.type ?? "application/octet-stream",
-            sizeBytes: file.file?.size ?? 0,
-          })),
-        }),
+      const uploadableFiles = uploadedFiles.filter((file) => file.file);
+      const metadata = uploadableFiles.map((file) => ({
+        id: file.id,
+        name: file.file?.name ?? file.name,
+        mimeType: file.file?.type ?? "application/octet-stream",
+        sizeBytes: file.file?.size ?? 0,
+      }));
+
+      const formData = new FormData();
+      formData.append("scope", scope);
+      formData.append("metadata", JSON.stringify(metadata));
+
+      uploadableFiles.forEach((file) => {
+        if (file.file) {
+          formData.append("files", file.file);
+        }
       });
 
-      console.log(await result.json())
+      await fetch("/api/diagnostic/process", {
+        method: "POST",
+        body: formData,
+      });
     } catch (error) {
       console.error(error);
       return;

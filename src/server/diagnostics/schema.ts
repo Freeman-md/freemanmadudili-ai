@@ -57,6 +57,15 @@ export const ProcessEvidenceExtractionSchema = z.object({
   text: z.string(),
 });
 
+export const ProcessEvidenceExtractionJsonSchema = {
+  type: "object",
+  properties: {
+    text: { type: "string" },
+  },
+  required: ["text"],
+  additionalProperties: false,
+} as const;
+
 export type EvidenceConfirmPayload = z.infer<typeof EvidenceConfirmPayloadSchema>;
 export type EvidenceConfirmFile = z.infer<typeof EvidenceConfirmFileSchema>;
 export type EvidenceInitPayload = z.infer<typeof EvidenceInitPayloadSchema>;

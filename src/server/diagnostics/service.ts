@@ -37,8 +37,7 @@ import {
 } from "@/server/diagnostics/validation";
 import { createSignedUploadUrl } from "@/server/storage";
 import { SIGNED_UPLOAD_URL_TTL_SECONDS } from "@/features/diagnostics/constants";
-import { extractDataFromFiles } from "@/server/diagnostics/ai";
-import { buildProcessEvidenceInput } from "@/server/diagnostics/parsers";
+import { buildProcessEvidenceInput, extractEvidenceText } from "@/server/diagnostics/helpers";
 
 export async function initDiagnosticRun(
   input: unknown
@@ -205,7 +204,9 @@ export async function processDiagnosticEvidence(
     return { ok: false, status: 400, error: "Missing file contents" };
   }
 
-  const extraction = await extractDataFromFiles(payload);
+  const text = await extractEvidenceText(payload.files);
 
-  return { ok: true, data: { text: extraction.text } };
+  console.log(text)
+
+  return { ok: true, data: { text } };
 }

@@ -57,7 +57,7 @@ export const QuestionFieldSchema = z.object({
   dependency: QuestionDependencySchema.optional(),
   fileRef: z
     .object({
-      allow: z.enum(["any", "csv", "image", "pdf", "email"]),
+      allow: z.enum(["any", "csv", "pdf", "xlsx"]),
       maxSelections: z.number().optional(),
     })
     .optional(),

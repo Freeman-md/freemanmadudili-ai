@@ -1,10 +1,4 @@
-import {
-  Database,
-  FileSpreadsheet,
-  FileText,
-  Image,
-  MessageSquare,
-} from "lucide-react";
+import { Database, FileSpreadsheet, FileText } from "lucide-react";
 
 import type {
   ClarifyingQuestionsSchema,
@@ -31,7 +25,7 @@ export const diagnosticSteps: DiagnosticStep[] = [
     id: "evidence_upload",
     title: "Upload Evidence",
     description:
-      "Upload real artefacts such as screenshots, CSVs, or CRM exports related to this workflow.",
+      "Upload real artefacts such as PDFs, CSVs, or Excel exports related to this workflow.",
   },
   {
     id: "initial_processing",
@@ -264,11 +258,9 @@ export function getMockClarifyingSchema(
 }
 
 export const evidenceTypes = [
-  { label: "Screenshots (PNG, JPG)", icon: Image },
-  { label: "CSV files", icon: FileSpreadsheet },
-  { label: "CRM exports", icon: Database },
   { label: "PDF files", icon: FileText },
-  { label: "Email or WhatsApp views", icon: MessageSquare },
+  { label: "CSV files", icon: FileSpreadsheet },
+  { label: "Excel files (XLS, XLSX)", icon: Database },
 ];
 
 export const defaultVerdict: DiagnosticVerdict = {
@@ -309,35 +301,18 @@ export const scopeValueByLabel = scopeEntries.reduce<Record<string, DiagnosticSc
 export const MAX_EVIDENCE_FILE_BYTES = 5 * 1024 * 1024;
 export const SIGNED_UPLOAD_URL_TTL_SECONDS = 600;
 
-export const ACCEPTED_EVIDENCE_EXTENSIONS = [
-  "png",
-  "jpg",
-  "jpeg",
-  "csv",
-  "pdf",
-  "xlsx",
-  "xls",
-  "eml",
-  "msg",
-];
+export const ACCEPTED_EVIDENCE_EXTENSIONS = ["csv", "pdf", "xlsx", "xls"];
 
 export const ACCEPTED_EVIDENCE_MIME_TYPES = [
-  "image/png",
-  "image/jpeg",
   "text/csv",
   "application/pdf",
   "application/vnd.ms-excel",
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  "message/rfc822",
 ];
 
 export const EVIDENCE_ACCEPT = {
-  "image/png": [".png"],
-  "image/jpeg": [".jpg", ".jpeg"],
   "text/csv": [".csv"],
   "application/pdf": [".pdf"],
   "application/vnd.ms-excel": [".xls"],
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
-  "message/rfc822": [".eml"],
-  "application/vnd.ms-outlook": [".msg"],
 } as const;

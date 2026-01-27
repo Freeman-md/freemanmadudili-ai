@@ -287,7 +287,7 @@ function FileReferenceSelect({
 
 function filterFileOptions(
   uploadedFiles: DiagnosticFile[],
-  allow?: "any" | "csv" | "image" | "pdf" | "email"
+  allow?: "any" | "csv" | "pdf" | "xlsx"
 ) {
   if (!allow || allow === "any") {
     return uploadedFiles.map((file) => ({
@@ -298,9 +298,8 @@ function filterFileOptions(
 
   const allowedExtensions = {
     csv: ["CSV"],
-    image: ["PNG", "JPG", "JPEG"],
     pdf: ["PDF"],
-    email: ["EML", "MSG"],
+    xlsx: ["XLS", "XLSX"],
   };
 
   const allowed = allowedExtensions[allow] ?? [];
